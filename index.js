@@ -8,9 +8,22 @@ app.get('/', function(req, res) {
 });
 
 io.on('connection', function(socket){
-  console.log('*** New Player ***', socket.id);
+
+  console.log('*** NEW PLAYER ***', socket.id);
+
+  // request user info and add to online list
+  socket.emit('user-request', socket.id, (user) => {
+
+    console.log('*** USER PROFILE ***', user);
+
+    online[user.username] = user;
+  });
+
 });
 
 http.listen(port, function() {
-  console.log(`Listening on port ${port}...`);
+  console.log(`LISTENING ON PORT ${port}...`);
 });
+
+// MOVE THESE SOMEWHERE ELSE
+const online = {};
