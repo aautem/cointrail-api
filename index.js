@@ -8,9 +8,9 @@ app.get('/', function(req, res) {
 });
 
 io.on('connection', function(socket){
-  console.log('*** New Player ***', socket.conn);
+  console.log('*** New Player ***', socket.id);
 });
 
 http.listen(port, function() {
-  console.log(`*** Listening on port ${port}... ***`);
+  console.log(`Listening on port ${port}...`);
 });
