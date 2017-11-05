@@ -19,9 +19,9 @@ io.on('connection', function(socket){
     console.log('*** ONLINE LIST ***', online);
   });
 
-  socket.on('disconnect', (reason) => {
+  socket.on('disconnecting', (reason) => {
 
-    console.log('*** DISCONNECTED ***', reason);
+    console.log('*** DISCONNECTING ***', reason);
 
     delete online[socket.username];
 
