@@ -2,15 +2,11 @@ const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const port = process.env.PORT || 3000;
+const config = require('./config');
 
 // App routes
 app.get('/', function(req, res) {
   res.send('.~::  C O N T R A I L  ::~.');
-});
-
-app.get('/config', function(req, res) {
-  console.log('*** GET /CONFIG ***', process.env, typeof process.env);
-  res.send(process.env);
 });
 
 // Socket.IO configuration
@@ -34,6 +30,9 @@ io.on('connection', function(socket){
 http.listen(port, function() {
   console.log(`LISTENING ON PORT ${port}...`);
 });
+
+// load config
+config.loadConfig(app);
 
 // TODO: Move elsewhere
 // Online players
