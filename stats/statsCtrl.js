@@ -2,9 +2,7 @@ const Stats = require('./statsModel');
 
 module.exports = {
   loadStats: (req, res) => {
-    console.log('*** LOADING STATS ***');
-
-    Stats.find({ username: req.params.username }, (err, data) => {
+    Stats.findOne({ username: req.params.username }, (err, data) => {
       if (err) {
         console.warn('Load stats error:', err);
       } else if (!data) {
