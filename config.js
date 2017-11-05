@@ -14,6 +14,6 @@ function loadConfig(app) {
   app.get('/config/client', (req, res) => {
     res.json(config);
   });
-}
+};
 
 module.exports = { loadConfig: loadConfig };

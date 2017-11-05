@@ -6,11 +6,12 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const port = process.env.PORT || 3000;
 const config = require('./config');
+const socket = require('./socket');
 const constants = require('./const');
 require('./db.js');
-require('./socket.js');
 require('./routes.js')(app, express);
 config.loadConfig(app);
+socket.configure(http);
 
 // Middleware
 app.use(morgan('dev'));
