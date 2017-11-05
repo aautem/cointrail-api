@@ -3,36 +3,33 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const port = process.env.PORT || 3000;
 
+// App routes
 app.get('/', function(req, res) {
   res.send('.~::  C O N T R A I L  ::~.');
 });
 
+// Socket.IO configuration
 io.on('connection', function(socket){
-
-  console.log('*** NEW PLAYER ***', socket.id);
-
-  // request user info and add to online list
+  // Request user info and add to online list
   socket.emit('user-request', socket.id, (user) => {
     socket.username = user.username;
     online[user.username] = user;
-
-    console.log('*** ONLINE LIST ***', online);
+    console.log('*** USER CONNECTED ***', online);
   });
 
+  // Inconsistent event firing on quick app restarts
+  // Possibly set up polling if this causes problems
   socket.on('disconnecting', (reason) => {
-
-    console.log('*** DISCONNECTING ***', reason);
-
     delete online[socket.username];
-
-    console.log('*** ONLINE LIST ***', online);
+    console.log('*** USER DISCONNECTED ***', online);
   });
-
 });
 
+// App ready
 http.listen(port, function() {
   console.log(`LISTENING ON PORT ${port}...`);
 });
 
-// MOVE THESE SOMEWHERE ELSE
+// TODO: Move elsewhere
+// Online players
 const online = {};
