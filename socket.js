@@ -21,4 +21,7 @@ function configure(http) {
   });
 };
   
-module.exports = { configure: configure };
+module.exports = {
+  configure: configure,
+  online: online,
+};
