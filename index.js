@@ -13,6 +13,7 @@ io.on('connection', function(socket){
 
   // request user info and add to online list
   socket.emit('user-request', socket.id, (user) => {
+    socket.username = user.username;
     online[user.username] = user;
 
     console.log('*** ONLINE LIST ***', online);
@@ -20,9 +21,9 @@ io.on('connection', function(socket){
 
   socket.on('disconnect', (reason) => {
 
-    console.log('*** DISCCONNECTED ***', reason);
+    console.log('*** DISCONNECTED ***', reason);
 
-    delete online[socket.id];
+    delete online[socket.username];
 
     console.log('*** ONLINE LIST ***', online);
   });
