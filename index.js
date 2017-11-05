@@ -13,10 +13,18 @@ io.on('connection', function(socket){
 
   // request user info and add to online list
   socket.emit('user-request', socket.id, (user) => {
-
-    console.log('*** USER PROFILE ***', user);
-
     online[user.username] = user;
+
+    console.log('*** ONLINE LIST ***', online);
+  });
+
+  socket.on('disconnect', (reason) => {
+
+    console.log('*** DISCCONNECTED ***', reason);
+
+    delete online[socket.id];
+
+    console.log('*** ONLINE LIST ***', online);
   });
 
 });
