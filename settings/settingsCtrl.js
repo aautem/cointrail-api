@@ -25,7 +25,7 @@ module.exports = {
     });
   },
   updateSettings: (req, res) => {
-    console.log('*** UPDATE PUT REQ BODY ***', res.body);
+    console.log('*** UPDATE PUT REQ BODY ***', req.body);
 
     Settings.findOneAndUpdate({ username: req.params.username }, req.body.settings, { new: true }, (err, data) => {
       if (err) {
