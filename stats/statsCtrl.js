@@ -25,7 +25,7 @@ module.exports = {
     });
   },
   updateStats: (req, res) => {
-    Stats.findOneAndUpdate({ username: req.body.username }, req.body.stats, { new: true }, (err, data) => {
+    Stats.findOneAndUpdate({ username: req.params.username }, req.body.stats, { new: true }, (err, data) => {
       if (err) {
         console.error('Update stats error:', err);
       } else if (!data) {
