@@ -8,6 +8,11 @@ app.get('/', function(req, res) {
   res.send('.~::  C O N T R A I L  ::~.');
 });
 
+app.get('/config', function(req, res) {
+  console.log('*** GET /CONFIG ***', process.env, typeof process.env);
+  res.send(process.env);
+});
+
 // Socket.IO configuration
 io.on('connection', function(socket){
   // Request user info and add to online list
