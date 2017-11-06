@@ -11,13 +11,13 @@ function configure(http) {
     socket.emit('user-request', socket.id, (user) => {
       socket.username = user.username;
       online[user.username] = user;
-      console.log('*** USER CONNECTED ***', online);
+      console.log('*** USER CONNECTED ***', user.username);
     });
 
     // Join game or add to waiting room
     socket.on('join-game', (userData, respond) => {
       // check waiting room for other player
-      console.log('*** JOIN GAME REQUEST ***', userData);
+      console.log('*** JOIN GAME REQUEST ***', userData.username);
       console.log('*** WAITING ROOM ***', waitingRoom);
 
       // userData EXAMPLE:
@@ -53,6 +53,11 @@ function configure(http) {
         // emit to players
         io.to(player1.id).to(player2.id).emit('series-created', series);
       }
+    });
+
+    socket.on('join-room', (roomName) => {
+      console.log('*** JOINING ROOM ***', roomName);
+      socket.join(roomName);
     });
 
     socket.on('game-request-timeout', (id) => {
