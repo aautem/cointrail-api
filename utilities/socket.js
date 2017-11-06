@@ -68,7 +68,7 @@ function configure(http) {
       }
     });
 
-    socet.on('drop-coin', (data, ack) => {
+    socket.on('drop-coin', (data, ack) => {
       console.log('*** DROP COIN ***', data.game, data.colId);
 
       const game = Object.assign({}, data.game);
