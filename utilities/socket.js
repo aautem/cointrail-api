@@ -51,12 +51,7 @@ function configure(http) {
         series.initializeSeries(player1, player2);
 
         // emit to players
-        io.to(player2.id).emit('series-created', series, (ack) => {
-          console.log('*** SERIES CREATED ACK ***', ack);
-        });
-        io.to(player1.id).emit('series-created', series, (ack) => {
-          console.log('*** SERIES CREATED ACK ***', ack);
-        });
+        io.to(player1.id).to(player2.id).emit('series-created', series);
       }
     });
 
