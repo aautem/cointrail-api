@@ -1,10 +1,8 @@
-const online = {};
-const waitingRoom = [];
-
 function configure(http) {
   const io = require('socket.io')(http);
+  const online = {};
+  const waitingRoom = [];
 
-  // Socket.IO configuration
   io.on('connection', (socket) => {
 
     // Request user info and add to online list
@@ -39,8 +37,4 @@ function configure(http) {
   });
 };
 
-module.exports = {
-  configure: configure,
-  online: online,
-  waitingRoom: waitingRoom,
-};
+module.exports = { configure: configure };
