@@ -13,9 +13,9 @@ function configure(http) {
     });
 
     // Handle game request from client
-    socket.on('game-request', (userData, cb) => {
+    socket.on('join-game', (userData, cb) => {
       // check waiting room for other player
-      console.log('*** GAME REQ ***', userData, typeof userData);
+      console.log('*** JOIN GAME REQ ***', userData, typeof userData);
 
       if (!waitingRoom.length) {
         waitingRoom.push(userData);
