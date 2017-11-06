@@ -122,10 +122,9 @@ class Game {
             this.gameOver = true;
           }
         } else {
-          const nextPlayer = Object.keys(this.players).filter((player) => {
-            return player.username !== this.turn;
-          });
-          this.turn = nextPlayer[0];
+          const usernames = Object.keys(this.players);
+          const nextTurn = this.turn === usernames[0] ? usernames[1] : usernames[0];
+          this.turn = nextTurn;
         }
       }
     }
