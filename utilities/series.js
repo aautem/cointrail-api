@@ -37,13 +37,18 @@ class Series {
 
   _initializeSeriesPlayers(player1, player2) {
     const player1Color = player1.settings.color;
-    const player2Color = player2.settings.color === player1Color ? player2.settings.color : player2.settings.altColor;
+    const player2Color = player2.settings.color === player1Color ? player2.settings.altColor : player2.settings.color;
     player1.gamePieceColor = player1Color;
     player2.gamePieceColor = player2Color;
 
     const players = {};
-    players[player1.username] = new Player(player1).initializeSeriesPlayer();
-    players[player2.username] = new Player(player2).initializeSeriesPlayer();
+    const p1 = new Player(player1);
+    const p2 = new Player(player2);
+    p1.initializeSeriesPlayer();
+    p2.initializeSeriesPlayer();
+
+    players[player1.username] = p1;
+    players[player2.username] = p2;
     this.players = players;
   }
 
