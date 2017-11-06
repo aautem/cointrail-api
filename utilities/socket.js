@@ -49,6 +49,7 @@ function configure(http) {
           timeLimit: player1.settings.timeLimit,
         });
         series.initializeSeries(player1, player2);
+        series.startNewGame();
 
         // emit to players
         io.to(player1.id).to(player2.id).emit('series-created', series);
