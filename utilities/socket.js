@@ -1,10 +1,11 @@
 function configure(http) {
-  const io = require('socket.io')(http);
+  const io = require('socket.io')(http, { pingInterval: 10000, pingTimeout: 15000 });
   const Series = require('./series');
   const online = {};
   const waitingRoom = [];
 
   io.on('connection', (socket) => {
+    console.log('*** WAITING ROOM ***', waitingRoom);
 
     // Request user info and add to online list
     socket.emit('user-request', socket.id, (user) => {
