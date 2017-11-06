@@ -1,6 +1,6 @@
 function configure(http) {
   const io = require('socket.io')(http);
-  const Series = require('./utilities/series');
+  const Series = require('./series');
   const online = {};
   const waitingRoom = [];
 

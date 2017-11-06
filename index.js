@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const port = process.env.PORT || 3000;
 const config = require('./config');
-const socket = require('./socket');
+const socket = require('./utilities/socket');
 const constants = require('./const');
 
 // start database

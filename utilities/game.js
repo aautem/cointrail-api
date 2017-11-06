@@ -12,7 +12,7 @@
 
 const Player = require('./player');
 
-export default class Game {
+class Game {
   constructor(props) {
     this.roomName = props.roomName;
     this.boardSize = props.boardSize;
@@ -227,3 +227,5 @@ export default class Game {
     return player1.points > player2.points ? player1.username : player2.username;
   }
 }
+
+module.exports = Game;

@@ -12,7 +12,7 @@
 const Player = require('./player');
 const Game = require('./game');
 
-export default class Series {
+class Series {
   constructor(props) {
     this.seriesLength = props.seriesLength;
     this.boardSize = props.boardSize;
@@ -65,3 +65,5 @@ export default class Series {
     //
   }
 }
+
+module.exports = Series;

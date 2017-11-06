@@ -11,7 +11,7 @@
 // losses: NUMBER
 // draws: NUMBER
 
-export default class Player {
+class Player {
   constructor(props) {
     this.id = props.id;
     this.username = props.username;
@@ -31,3 +31,5 @@ export default class Player {
     this.points += points;
   }
 }
+
+module.exports = Player;
