@@ -3,11 +3,11 @@ mongoose.connect(process.env.MONGODB_URI);
 const db = mongoose.connection;
 
 db.on('error', (error) => {
-  console.warn('DB connection error:', error);
+  console.warn('*** MONGO DB CONNECTION ERROR ***', error);
 });
 
 db.once('open', () => {
-  console.log('MongoDB connected');
+  console.log('*** MONGODB CONNECTED ***');
 });
 
 module.exports = db;

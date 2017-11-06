@@ -4,7 +4,7 @@ module.exports = {
   loadSettings: (req, res) => {
     Settings.findOne({ username: req.params.username }, (err, data) => {
       if (err) {
-        console.error('Load settings error:', err);
+        console.log('*** ERROR LOADING SETTINGS ***', err);
       } else if (!data) {
         const settings = new Settings({
           username: req.params.username,
@@ -12,28 +12,26 @@ module.exports = {
 
         settings.save((err, data) => {
           if (err) {
-            console.error('Error creating settings:', err);
+            console.log('*** ERROR CREATING SETTINGS ***', err);
           } else {
-            console.log('Settings initialized', data);
+            console.log('*** SETTINGS INITIALIZED ***', data);
             res.end(JSON.stringify(data));
           }
         })
       } else {
-        console.log('Settings loaded', data);
+        console.log('*** SETTINGS LOADED ***', data);
         res.end(JSON.stringify(data));
       }
     });
   },
   updateSettings: (req, res) => {
-    console.log('*** UPDATE PUT REQ BODY ***', req.body);
-
     Settings.findOneAndUpdate({ username: req.params.username }, req.body.settings, { new: true }, (err, data) => {
       if (err) {
-        console.error('Update settings error:', err);
+        console.log('*** ERROR UPDATING SETTINGS ***', err);
       } else if (!data) {
-        console.error('No settings found for user');
+        console.log('*** NO USER SETTINGS ***');
       } else {
-        console.log('Settings updated', data);
+        console.log('*** SETTINGS UPDATED ***', data);
         res.end(JSON.stringify(data));
       }
     });

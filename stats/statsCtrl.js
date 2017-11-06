@@ -4,7 +4,7 @@ module.exports = {
   loadStats: (req, res) => {
     Stats.findOne({ username: req.params.username }, (err, data) => {
       if (err) {
-        console.error('Load stats error:', err);
+        console.log('*** ERROR LOADING STATS ***', err);
       } else if (!data) {
         const stats = new Stats({
           username: req.params.username,
@@ -12,14 +12,14 @@ module.exports = {
 
         stats.save((err, data) => {
           if (err) {
-            console.error('Error creating stats:', err);
+            console.log('*** ERROR CREATING STATS ***', err);
           } else {
-            console.log('Stats initialized', data);
+            console.log('*** STATS INITIALIZED ***', data);
             res.end(JSON.stringify(data));
           }
         })
       } else {
-        console.log('Stats loaded', data);
+        console.log('*** STATS LOADED ***', data);
         res.end(JSON.stringify(data));
       }
     });
@@ -27,11 +27,11 @@ module.exports = {
   updateStats: (req, res) => {
     Stats.findOneAndUpdate({ username: req.params.username }, req.body.stats, { new: true }, (err, data) => {
       if (err) {
-        console.error('Update stats error:', err);
+        console.log('*** ERROR UPDATING STATS ***', err);
       } else if (!data) {
-        console.error('No stats found for user');
+        console.log('*** NO USER STATS ***');
       } else {
-        console.log('Stats updated', data);
+        console.log('*** STATS UPDATED ***', data);
         res.end(JSON.stringify(data));
       }
     });

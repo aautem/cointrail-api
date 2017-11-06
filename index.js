@@ -23,7 +23,7 @@ require('./routes.js')(app, express);
 socket.configure(http);
 
 http.listen(port, () => {
-  console.log(`LISTENING ON PORT ${port}...`);
+  console.log(`*** LISTENING ON PORT ${port} ***`);
 });
 
 module.exports = app;
