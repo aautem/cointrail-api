@@ -1,6 +1,7 @@
 //   players: OBJECT
 //   boardSize: NUMBER
 //   turn?: STRING
+//   roomName: STRING
 //   board: ARRAY [[ STRING ]]
 //   boardPoints: ARRAY [[ NUMBER ]]
 //   timeLimit: BOOLEAN
@@ -13,6 +14,7 @@ const Player = require('./player');
 
 export default class Game {
   constructor(props) {
+    this.roomName = props.roomName;
     this.boardSize = props.boardSize;
     this.timeLimit = props.timeLimit;
     this.winner = null;

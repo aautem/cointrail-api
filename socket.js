@@ -13,6 +13,27 @@ function configure(http) {
       console.log('*** USER CONNECTED ***', online);
     });
 
+    socket.on('game-request-timeout', (id, ack) => {
+      if (waitingRoom.length === 1 && waitingRoom[0].id === id) {
+        const player = waitingRoom.pop();
+        ack(`${player.username}: game request timeout.`);
+      }
+    });
+
+    socet.on('drop-coin', (data, ack) => {
+      console.log('*** DROP COIN ***', data.game, data.colId);
+
+      const game = Object.assign({}, data.game);
+      game.dropCoin(game.turn, data.colId);
+
+      // emit updated game to room
+      io.to(game.roomName).emit('game-update', game, (ack) => {
+        console.log('*** GAME UPDATE ACK ***', ack);
+      });
+
+      ack(200);
+    });
+
     // Handle game request from client
     socket.on('join-game', (userData, respond) => {
       // check waiting room for other player
@@ -33,12 +54,6 @@ function configure(http) {
       if (!waitingRoom.length) {
         waitingRoom.push(userData);
         respond('waiting');
-
-        // HERE IS WHERE WE'LL HANDLE THE OTHER SIDE OF
-        // THE "JOIN GAME" SCENARIO
-        // DON'T WORRY ABOUT OTHER SOCKETS
-        // EVERY SOCKET WILL HAVE IT'S OWN EVENT
-
       } else {
         const player1 = waitingRoom.pop();
         const player2 = userData;
@@ -52,12 +67,13 @@ function configure(http) {
           timeLimit: player1.settings.timeLimit,
         });
         series.initializeSeries(player1, player2);
-
+        socket.join(series.roomName);
         // LEAVE ROOM WHEN GAME OVER
-        socket.join(`game-room-${player1.username}`);
 
-        // SET UP ROOM LISTENERS???
-
+        // emit to player waiting
+        io.to(player2.id).emit('series-created', series, (ack) => {
+          console.log('*** SERIES CREATED ACK ***', ack);
+        });
         respond(series);
       }
 

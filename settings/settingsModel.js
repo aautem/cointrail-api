@@ -5,12 +5,12 @@ const SettingsSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  size: {
+  boardSize: {
     type: Number,
     default: 4,
     required: true
   },
-  length: {
+  seriesLength: {
     type: Number,
     default: 7,
     required: true
@@ -20,14 +20,14 @@ const SettingsSchema = new mongoose.Schema({
     default: false,
     required: true
   },
-  priColor: {
+  color: {
     type: String,
-    default: 'steelblue',
+    default: '#3780B6',
     required: true
   },
   altColor: {
     type: String,
-    default: 'powderblue',
+    default: '#71CFEE',
     required: true
   }
 });

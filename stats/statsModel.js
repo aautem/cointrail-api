@@ -15,7 +15,7 @@ const StatsSchema = new mongoose.Schema({
     default: 0,
     required: true
   },
-  ties: {
+  draws: {
     type: Number,
     default: 0,
     required: true
@@ -31,6 +31,11 @@ const StatsSchema = new mongoose.Schema({
     required: true
   },
   winsByDefault: {
+    type: Number,
+    default: 0,
+    required: true
+  },
+  winsByPoints: {
     type: Number,
     default: 0,
     required: true
