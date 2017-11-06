@@ -61,8 +61,12 @@ function configure(http) {
     });
 
     socket.on('game-request-timeout', (id) => {
+      console.log('*** GAME REQUEST TIMEOUT ***', id);
+
       if (waitingRoom.length === 1 && waitingRoom[0].id === id) {
+        console.log('*** BEFORE ***', waitingRoom);
         const player = waitingRoom.pop();
+        console.log('*** AFTER ***', waitingRoom);
       }
     });
 
