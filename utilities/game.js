@@ -29,17 +29,17 @@ class Game {
     this.turn = null
   }
 
-  public initializeGame(player1, player2) {
-    this.initializeBoard();
-    this.initializeBoardPoints();
-    this.initializePlayers(player1, player2);
+  initializeGame(player1, player2) {
+    this._initializeBoard();
+    this._initializeBoardPoints();
+    this._initializePlayers(player1, player2);
   }
 
-  private pointValues() {
+  _pointValues() {
     return [5, 10, 15, 25, 35, 50];
   }
 
-  private pointsPerBoard() {
+  _pointsPerBoard() {
     return {
       // 4x4 -- 16 spaces
       4: [4, 4, 4, 2, 1, 1],
@@ -50,7 +50,7 @@ class Game {
     };
   }
 
-  private initializeBoard() {
+  _initializeBoard() {
     const board = [];
     for (let rowId = 0; rowId < this.boardSize; rowId ++) {
       board[rowId] = [];
@@ -61,10 +61,10 @@ class Game {
     this.board = board;
   }
 
-  private initializeBoardPoints() {
+  _initializeBoardPoints() {
     const boardPoints = [];
-    let pointValues = this.pointValues();
-    let pointsPerBoard = this.pointsPerBoard();
+    let pointValues = this._pointValues();
+    let pointsPerBoard = this._pointsPerBoard();
     for (let rowId = 0; rowId < this.boardSize; rowId ++) {
       boardPoints[rowId] = [];
       for (let colId = 0; colId < this.boardSize; colId ++) {
@@ -80,7 +80,7 @@ class Game {
     this.boardPoints = boardPoints;
   }
 
-  private initializePlayers(player1, player2) {
+  _initializePlayers(player1, player2) {
     const players = {};
     players[player1.username] = new Player(player1);
     players[player2.username] = new Player(player2);
@@ -88,26 +88,23 @@ class Game {
     this.turn = player1.username;
   }
 
-  public dropCoin(username, colId) {
-    const rowId = this.findEmptyRowId(colId);
+  dropCoin(username, colId) {
+    const rowId = this._findEmptyRowId(colId);
 
     if (rowId !== null) {
-      const points = this.getBoardPoints(rowId, colId);
+      const points = this._getBoardPoints(rowId, colId);
       this.players[username].redeemPoints(points);
-      this.addPlayerToBoard(username, rowId, colId);
+      this._addPlayerToBoard(username, rowId, colId);
 
-      const winner = this.getGameWinner();
+      const winner = this._getGameWinner();
       if (winner) {
         this.turn = null;
         this.winner = winner;
         this.gameOver = true;
-
-        // DO SOMETHING WITH SERIES INSTANCE???
-
       } else {
-        const draw = this.checkForDraw();
+        const draw = this._checkForDraw();
         if (draw) {
-          const winnerByPoints = this.getWinnerByPoints();
+          const winnerByPoints = this._getWinnerByPoints();
           if (winnerByPoints) {
             this.turn = null;
             this.winner = winnerByPoints;
@@ -128,7 +125,7 @@ class Game {
     }
   }
 
-  private findEmptyRowId(colId) {
+  _findEmptyRowId(colId) {
     let emptyRowId = null;
     for (let rowId = this.boardSize - 1; rowId >= 0; rowId --) {
       if (emptyRowId === null && !this.board[rowId][colId]) {
@@ -138,22 +135,22 @@ class Game {
     return emptyRowId;
   }
 
-  private addPlayerToBoard(username, rowId, colId) {
+  _addPlayerToBoard(username, rowId, colId) {
     this.board[rowId][colId] = username;
   }
 
-  private getBoardPoints(rowId, colId) {
+  _getBoardPoints(rowId, colId) {
     return this.boardPoints[rowId][colId];
   }
 
-  private getGameWinner() {
+  _getGameWinner() {
     const rows = this.board.slice();
-    const columns = this.getWinningColumns();
-    const diagonals = this.getWinningDiagonals();
-    return this.checkWinningLines([...rows, ...columns, ...diagonals]);
+    const columns = this._getWinningColumns();
+    const diagonals = this._getWinningDiagonals();
+    return this._checkWinningLines([...rows, ...columns, ...diagonals]);
   }
 
-  private checkWinningLines(winningLines) {
+  _checkWinningLines(winningLines) {
     let winner = null;
     winningLines.forEach((line) => {
       if (!winner) {
@@ -171,15 +168,7 @@ class Game {
     return winner;
   }
 
-  private getWinningRows() {
-    let rows = [];
-    this.board.forEach((row) => {
-      rows.push(row);
-    });
-    return rows;
-  }
-
-  private getWinningColumns() {
+  _getWinningColumns() {
     let columns = [];
     for (let colId = 0; colId < this.boardSize; colId ++) {
       columns[colId] = [];
@@ -190,7 +179,7 @@ class Game {
     return columns;
   }
 
-  private getWinningDiagonals() {
+  _getWinningDiagonals() {
     const topToBot = [];
     const botToTop = [];
     let colId = this.boardSize - 1;
@@ -203,7 +192,7 @@ class Game {
     return [topToBot, botToTop];
   }
 
-  private checkForDraw() {
+  _checkForDraw() {
     let draw = true;
     this.board.forEach((row, rowId) => {
       if (draw) {
@@ -217,7 +206,7 @@ class Game {
     return draw;
   }
 
-  private getWinnerByPoints() {
+  _getWinnerByPoints() {
     const players = Object.keys(this.players);
     const player1 = this.players[players[0]];
     const player2 = this.players[players[1]];

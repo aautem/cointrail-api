@@ -29,12 +29,12 @@ class Series {
     this.roomName = null;
   }
 
-  public initializeSeries(player1, player2) {
+  initializeSeries(player1, player2) {
     this.roomName = `${player1.username}-vs-${player2.username}`;
-    this.initializeSeriesPlayers(player1, player2);
+    this._initializeSeriesPlayers(player1, player2);
   }
 
-  private initializeSeriesPlayers(player1, player2) {
+  _initializeSeriesPlayers(player1, player2) {
     const player1Color = player1.settings.color;
     const player2Color = player2.settings.color === player1Color ? player2.settings.color : player2.settings.altColor;
     player1.gamePieceColor = player1Color;
@@ -46,9 +46,7 @@ class Series {
     this.players = players;
   }
 
-  public startNewGame() {
-    // CHECK IF SERIES IS OVER???
-
+  startNewGame() {
     const settings = {
       boardSize: this.boardSize,
       timeLimit: this.timeLimit,
@@ -57,11 +55,11 @@ class Series {
     this.games.push(new Game(settings));
   }
 
-  public addGameWinner(username) {
+  addGameWinner(username) {
     //
   }
 
-  public checkForSeriesWinner() {
+  checkForSeriesWinner() {
     //
   }
 }

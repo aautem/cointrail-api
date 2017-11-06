@@ -21,13 +21,13 @@ class Player {
     this.winner = false;
   }
 
-  public initializeSeriesPlayer() {
+  initializeSeriesPlayer() {
     this.wins = 0;
     this.losses = 0;
     this.draws = 0;
   }
 
-  public redeemPoints(points) {
+  redeemPoints(points) {
     this.points += points;
   }
 }
