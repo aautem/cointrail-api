@@ -64,7 +64,7 @@ class Game {
   _initializeBoardPoints() {
     const boardPoints = [];
     let pointValues = this._pointValues();
-    let pointsPerBoard = this._pointsPerBoard();
+    let pointsPerBoard = this._pointsPerBoard()[this.boardSize];
     for (let rowId = 0; rowId < this.boardSize; rowId ++) {
       boardPoints[rowId] = [];
       for (let colId = 0; colId < this.boardSize; colId ++) {
