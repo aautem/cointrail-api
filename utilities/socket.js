@@ -78,9 +78,7 @@ function configure(http) {
       game.dropCoin(game.turn, data.colId);
 
       // emit updated game to room
-      io.to(game.roomName).emit('game-update', game, (ack) => {
-        console.log('*** GAME UPDATE ACK ***', ack);
-      });
+      io.to(game.roomName).emit('game-update', game);
     });
 
     // Inconsistent event firing on quick app restarts
