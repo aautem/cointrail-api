@@ -1,6 +1,7 @@
 function configure(http) {
   const io = require('socket.io')(http, { pingInterval: 10000, pingTimeout: 15000 });
   const Series = require('./series');
+  const Game = require('./game');
   const online = {};
   const waitingRoom = [];
 
@@ -73,8 +74,7 @@ function configure(http) {
 
     socket.on('drop-coin', (data) => {
       console.log('*** DROP COIN ***', data.game, data.colId);
-
-      const game = Object.assign({}, data.game);
+      const game = new Game(data.game);
       game.dropCoin(game.turn, data.colId);
 
       // emit updated game to room

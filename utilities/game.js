@@ -14,19 +14,23 @@ const Player = require('./player');
 
 class Game {
   constructor(props) {
-    this.roomName = props.roomName;
-    this.boardSize = props.boardSize;
-    this.timeLimit = props.timeLimit;
-    this.winner = null;
-    this.draw = false;
-    this.gameOver = false;
-    this.winByPoints = false;
+    if (!props.turn) {
+      this.roomName = props.roomName;
+      this.boardSize = props.boardSize;
+      this.timeLimit = props.timeLimit;
+      this.winner = null;
+      this.draw = false;
+      this.gameOver = false;
+      this.winByPoints = false;
 
-    // initialized later
-    this.board = null;
-    this.boardPoints = null;
-    this.players = null;
-    this.turn = null
+      // initialized later
+      this.board = null;
+      this.boardPoints = null;
+      this.players = null;
+      this.turn = null
+    } else {
+      this._createInGameInstance(props);
+    }
   }
 
   initializeGame(player1, player2) {
@@ -214,6 +218,20 @@ class Game {
       return null;
     }
     return player1.points > player2.points ? player1.username : player2.username;
+  }
+
+  _createInGameInstance(props) {
+    this.roomName = props.roomName;
+    this.boardSize = props.boardSize;
+    this.timeLimit = props.timeLimit;
+    this.winner = props.winner;
+    this.draw = props.draw;
+    this.gameOver = props.gameOver;
+    this.winByPoints = props.winByPoints;
+    this.board = props.board;
+    this.boardPoints = props.boardPoints;
+    this.players = props.players;
+    this.turn = props.turn;
   }
 }
 
