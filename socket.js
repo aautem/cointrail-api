@@ -31,7 +31,7 @@ function configure(http) {
     // Inconsistent event firing on quick app restarts
     // Possibly set up polling if this causes problems
     socket.on('disconnecting', (reason) => {
-      delete online[socket.username];
+      // delete online[socket.username];
       console.log('*** USER DISCONNECTED ***', online);
     });
   });
