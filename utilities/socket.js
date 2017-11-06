@@ -14,7 +14,7 @@ function configure(http) {
     });
 
     // Join game or add to waiting room
-    socket.on('join-game', (userData, respond) => {
+    socket.on('join-game', (userData) => {
       // check waiting room for other player
       console.log('*** JOIN GAME REQUEST ***', userData);
       console.log('*** WAITING ROOM ***', waitingRoom);
@@ -48,27 +48,24 @@ function configure(http) {
           timeLimit: player1.settings.timeLimit,
         });
         series.initializeSeries(player1, player2);
-        socket.join(series.roomName);
-        // LEAVE ROOM WHEN GAME OVER
 
-        console.log(`*** ${socket.username} ROOMS ***`, socket.rooms);
-
-        // emit to player waiting
+        // emit to players
         io.to(player2.id).emit('series-created', series, (ack) => {
           console.log('*** SERIES CREATED ACK ***', ack);
         });
-        respond(series);
+        io.to(player1.id).emit('series-created', series, (ack) => {
+          console.log('*** SERIES CREATED ACK ***', ack);
+        });
       }
     });
 
-    socket.on('game-request-timeout', (id, ack) => {
+    socket.on('game-request-timeout', (id) => {
       if (waitingRoom.length === 1 && waitingRoom[0].id === id) {
         const player = waitingRoom.pop();
-        ack(`${player.username}: game request timeout.`);
       }
     });
 
-    socket.on('drop-coin', (data, ack) => {
+    socket.on('drop-coin', (data) => {
       console.log('*** DROP COIN ***', data.game, data.colId);
 
       const game = Object.assign({}, data.game);
@@ -78,8 +75,6 @@ function configure(http) {
       io.to(game.roomName).emit('game-update', game, (ack) => {
         console.log('*** GAME UPDATE ACK ***', ack);
       });
-
-      ack(200);
     });
 
     // Inconsistent event firing on quick app restarts
