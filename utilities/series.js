@@ -52,8 +52,11 @@ class Series {
       timeLimit: this.timeLimit,
       roomName: this.roomName,
     };
-    const names = Object.keys(this.players);
-    this.games.push(new Game(settings).initializeGame(this.players[names[0]], this.players[names[1]]));
+    const usernames = Object.keys(this.players);
+    const player1 = this.players[usernames[0]];
+    const player2 = this.players[usernames[1]];
+    const game = new Game(settings).initializeGame(player1, player2);
+    this.games.push(game);
   }
 
   addGameWinner(username) {

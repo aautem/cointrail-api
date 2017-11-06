@@ -84,8 +84,8 @@ class Game {
     const players = {};
     players[player1.username] = new Player(player1);
     players[player2.username] = new Player(player2);
-    this.players = players;
     this.turn = player1.username;
+    this.players = players;
   }
 
   dropCoin(username, colId) {
