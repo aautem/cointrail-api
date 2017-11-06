@@ -52,6 +52,7 @@ function configure(http) {
 
         // emit to players
         io.to(player1.id).to(player2.id).emit('series-created', series);
+        respond('series created');
       }
     });
 
