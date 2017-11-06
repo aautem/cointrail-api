@@ -32,6 +32,7 @@ class Series {
   initializeSeries(player1, player2) {
     this.roomName = `${player1.username}-vs-${player2.username}`;
     this._initializeSeriesPlayers(player1, player2);
+    this._startNewGame(player1, player2);
   }
 
   _initializeSeriesPlayers(player1, player2) {
@@ -46,17 +47,13 @@ class Series {
     this.players = players;
   }
 
-  startNewGame() {
+  _startNewGame(player1, player2) {
     const settings = {
       boardSize: this.boardSize,
       timeLimit: this.timeLimit,
       roomName: this.roomName,
     };
-    const usernames = Object.keys(this.players);
-    const player1 = this.players[usernames[0]];
-    const player2 = this.players[usernames[1]];
-    const game = new Game(settings).initializeGame(player1, player2);
-    this.games.push(game);
+    this.games.push(new Game(settings).initializeGame(player1, player2));
   }
 
   addGameWinner(username) {
