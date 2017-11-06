@@ -97,7 +97,9 @@ class Game {
 
     if (rowId !== null) {
       const points = this._getBoardPoints(rowId, colId);
-      this.players[username].redeemPoints(points);
+      const player = this.players[username];
+      player.points += points;
+      this.players[username] = player;
       this._addPlayerToBoard(username, rowId, colId);
 
       const winner = this._getGameWinner();
