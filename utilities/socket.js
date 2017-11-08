@@ -11,26 +11,24 @@ function configure(http) {
   // SERVER SHOULD SEND BACK FINISHED GAMES WITH NEXT GAME INITIALIZED
 
   io.on('connection', (socket) => {
+    console.log('\x1b[32m', 'New player connected:', user.username);
 
     // Request user info and add to online list
     socket.emit('user-request', socket.id, (user) => {
       socket.username = user.username;
       online[user.username] = user;
-      console.log('^[[1;32mNew player connected:', user.username);
     });
 
     // Update series object
     socket.on('start-next-game', (series, respond) => {
       const updatedSeries = new Series(series);
-      updatedSeries.updateSeries();
       respond(updatedSeries);
     });
 
     // Join game or add to waiting room
     socket.on('join-game', (userData, respond) => {
       // check waiting room for other player
-      console.log('*** JOIN GAME REQUEST ***', userData.username);
-      console.log('*** WAITING ROOM ***', waitingRoom);
+      console.log('\x1b[35m', 'Request to join game:', userData.username);
 
       // userData EXAMPLE:
       // {id: 'LxKOP7TqMVBDUzimAAAA',
@@ -46,7 +44,6 @@ function configure(http) {
 
       if (!waitingRoom.length) {
         waitingRoom.push(userData);
-        console.log('*** WAITING ROOM ***', waitingRoom);
         respond('waiting');
       } else {
         const player1 = waitingRoom.pop();
@@ -69,26 +66,26 @@ function configure(http) {
     });
 
     socket.on('join-room', (roomName) => {
-      console.log('*** JOINING ROOM ***', roomName);
+      console.log('\x1b[34m', 'Joining room:', socket.username, '>>>' roomName);
       socket.join(roomName);
     });
 
     socket.on('game-request-timeout', (id) => {
-      console.log('*** GAME REQUEST TIMEOUT ***', id);
+      console.log('\x1b[31m', 'Game request timeout:', id);
       if (waitingRoom.length === 1 && waitingRoom[0].id === id) {
         waitingRoom.pop();
       }
     });
 
     socket.on('cancel-game', (username) => {
-      console.log('*** GAME REQUEST CANCELLATION ***', username);
+      console.log('\x1b[31m', 'Game request cancelled:', username);
       if (waitingRoom.length === 1 && waitingRoom[0].username === username) {
         waitingRoom.pop();
       }
     });
 
     socket.on('drop-coin', (data) => {
-      console.log('Coin dropped by'.blue, data.game.turn);
+      console.log('\x1b[34m', 'Coin dropped by', data.game.turn);
       const game = new Game(data.game);
       game.dropCoin(game.turn, data.colId);
       // emit updated game to room
@@ -96,10 +93,19 @@ function configure(http) {
     });
 
     socket.on('disconnecting', (reason) => {
-      console.log('^[[1;31mPlayer disconnected:', socket.username, reason);
+      console.log('\x1b[31m', 'Player disconnected:', socket.username, reason);
       delete online[socket.username];
     });
   });
 };
+
+// FgBlack = '\x1b[30m'
+// FgRed = '\x1b[31m'
+// FgGreen = '\x1b[32m'
+// FgYellow = '\x1b[33m'
+// FgBlue = '\x1b[34m'
+// FgMagenta = '\x1b[35m'
+// FgCyan = '\x1b[36m'
+// FgWhite = '\x1b[37m'
 
 module.exports = { configure: configure };

@@ -57,6 +57,7 @@ class Series {
   }
 
   _startNewGame(player1, player2) {
+    console.log('\x1b[33m', 'Checkpoint :: starting game...', player2);
     const settings = {
       boardSize: this.boardSize,
       timeLimit: this.timeLimit,
@@ -65,6 +66,7 @@ class Series {
     const game = new Game(settings);
     game.initializeGame(player1, player2);
     this.games.push(game);
+    console.log('\x1b[33m', 'Checkpoint :: new game added', this.games);
   }
 
   _createInSeriesInstance(props) {
@@ -79,9 +81,12 @@ class Series {
     this.winByPoints = props.winByPoints;
     this.players = props.players;
     this.roomName = props.roomName;
+
+    console.log('\x1b[33m', 'Updating series:', this);
+    this._updateSeries();
   }
 
-  updateSeries() {
+  _updateSeries() {
     // add stats from last game to series stats and seriesPlayers
     const game = this.games[this.gamesPlayed];
     const usernames = this._getUsernames();
@@ -91,9 +96,10 @@ class Series {
     this.players[usernames[0]].points += game.players[usernames[0]].points;
     this.players[usernames[1]].points += game.players[usernames[1]].points;
 
+    console.log('\x1b[33m', 'Checkpoint :: gamesPlayed =', this.gamesPlayed);
+
     if (game.winner) {
       const loser = game.winner === usernames[0] ? usernames[1] : usernames[0];
-      console.log('*** LOSER ***', loser);
       this.players[game.winner].wins += 1;
       this.players[loser].losses += 1;
     } else if (game.draw) {
@@ -106,6 +112,7 @@ class Series {
       this.seriesOver = true;
       this.winner = this._determineSeriesWinner();
     } else {
+      console.log('\x1b[33m', 'Checkpoint :: starting new game...', this.players[game.winner]);
       this._startNewGame(this.players[usernames[0]], this.players[usernames[1]]);
     }
   }
