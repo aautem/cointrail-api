@@ -5,14 +5,18 @@ function configure(http) {
   const online = {};
   const waitingRoom = [];
 
+  // WHERE ARE INDIVIDUAL GAME STATS BEING ADDED TO THE SERIES STATS???
+  // SHOULD BE SERVER SIDE WHEN GAME IS SET TO GAMEOVER
+
+  // SERVER SHOULD SEND BACK FINISHED GAMES WITH NEXT GAME INITIALIZED
+
   io.on('connection', (socket) => {
-    console.log('*** WAITING ROOM ***', waitingRoom);
 
     // Request user info and add to online list
     socket.emit('user-request', socket.id, (user) => {
       socket.username = user.username;
       online[user.username] = user;
-      console.log('*** USER CONNECTED ***', user.username);
+      console.log('New player connected:'.green, user.username);
     });
 
     // Join game or add to waiting room
@@ -85,11 +89,9 @@ function configure(http) {
       io.to(game.roomName).emit('game-update', game);
     });
 
-    // Inconsistent event firing on quick app restarts
-    // Possibly set up polling if this causes problems
     socket.on('disconnecting', (reason) => {
-      // delete online[socket.username];
-      console.log(`*** ${socket.username} DISCONNECTED ***`, reason);
+      console.log('Player disconnected:'.red, socket.username, reason);
+      delete online[socket.username];
     });
   });
 };
