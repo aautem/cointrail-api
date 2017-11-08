@@ -64,11 +64,15 @@ function configure(http) {
 
     socket.on('game-request-timeout', (id) => {
       console.log('*** GAME REQUEST TIMEOUT ***', id);
-
       if (waitingRoom.length === 1 && waitingRoom[0].id === id) {
-        console.log('*** BEFORE ***', waitingRoom);
-        const player = waitingRoom.pop();
-        console.log('*** AFTER ***', waitingRoom);
+        waitingRoom.pop();
+      }
+    });
+
+    socket.on('cancel-game', (username) => {
+      console.log('*** GAME REQUEST CANCELLATION ***', username);
+      if (waitingRoom.length === 1 && waitingRoom[0].username === username) {
+        waitingRoom.pop();
       }
     });
 
