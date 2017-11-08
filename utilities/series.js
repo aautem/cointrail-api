@@ -20,6 +20,7 @@ class Series {
       this.timeLimit = props.timeLimit;
       this.gamesPlayed = 0;
       this.games = [];
+      this.currentGame = null;
       this.winner = null;
       this.draw = false;
       this.seriesOver = null;
@@ -56,20 +57,18 @@ class Series {
     this.players = players;
   }
 
+  // ADD CURRENT GAME PROP TO SERIES
+
   _startNewGame(player1, player2) {
-    console.log('\x1b[33m', 'Checkpoint :: starting game...', player2);
     const settings = {
       boardSize: this.boardSize,
       timeLimit: this.timeLimit,
       roomName: this.roomName,
     };
     let game = new Game(settings);
-    console.log('\x1b[33m', 'Checkpoint :: new game');
     game.initializeGame(player1, player2);
-    console.log('\x1b[33m', 'Checkpoint :: game initialized');
-    console.log('\x1b[33m', 'Checkpoint :: all games before', this.games);
     this.games.push(game);
-    console.log('\x1b[33m', 'Checkpoint :: all games after', this.games);
+    this.currentGame = game;
   }
 
   _createInSeriesInstance(props) {
@@ -78,14 +77,13 @@ class Series {
     this.timeLimit = props.timeLimit;
     this.gamesPlayed = props.gamesPlayed;
     this.games = props.games;
+    this.currentGame = props.currentGame;
     this.winner = props.winner;
     this.draw = props.draw;
     this.seriesOver = props.seriesOver;
     this.winByPoints = props.winByPoints;
     this.players = props.players;
     this.roomName = props.roomName;
-
-    console.log('\x1b[33m', 'Updating series:', this);
     this._updateSeries();
   }
 
