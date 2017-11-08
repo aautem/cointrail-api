@@ -68,7 +68,8 @@ class Series {
     game.initializeGame(player1, player2);
     console.log('\x1b[33m', 'Checkpoint :: game initialized');
     console.log('\x1b[33m', 'Checkpoint :: all games before', this.games);
-    this.games.push(game);
+    game = JSON.stringify(game);
+    this.games.push(JSON.parse(game));
     console.log('\x1b[33m', 'Checkpoint :: all games after', this.games);
   }
 
