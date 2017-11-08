@@ -67,8 +67,8 @@ class Series {
     };
     let game = new Game(settings);
     game.initializeGame(player1, player2);
-    this.games.push(game);
     this.currentGame = game;
+    this.games.push(game);
   }
 
   _createInSeriesInstance(props) {
