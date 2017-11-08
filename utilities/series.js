@@ -92,9 +92,8 @@ class Series {
     this.players[usernames[1]].points += game.players[usernames[1]].points;
 
     if (game.winner) {
-      const loser = game.winner === this.players[usernames[0]].username ?
-        this.players[usernames[1]] : this.players[usernames[0]];
-
+      const loser = game.winner === usernames[0] ? usernames[1] : usernames[0];
+      console.log('*** LOSER ***', loser);
       this.players[game.winner].wins += 1;
       this.players[loser].losses += 1;
     } else if (game.draw) {
