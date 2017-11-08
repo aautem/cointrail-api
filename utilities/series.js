@@ -24,7 +24,7 @@ class Series {
       this.draw = false;
       this.seriesOver = null;
       this.winByPoints = false;
-  
+
       // initialized later
       this.players = null;
       this.roomName = null;
@@ -67,8 +67,7 @@ class Series {
     this.games.push(game);
   }
 
-  _createInGameInstance(props) {
-    this.players = props.players;
+  _createInSeriesInstance(props) {
     this.seriesLength = props.seriesLength;
     this.boardSize = props.boardSize;
     this.timeLimit = props.timeLimit;
@@ -78,6 +77,8 @@ class Series {
     this.draw = props.draw;
     this.seriesOver = props.seriesOver;
     this.winByPoints = props.winByPoints;
+    this.players = props.players;
+    this.roomName = props.roomName;
   }
 
   updateSeries() {
@@ -100,7 +101,7 @@ class Series {
       this.players[usernames[0]].draws += 1;
       this.players[usernames[1]].draws += 1;
     }
-    
+
     // check for series winner
     if (this._seriesClosedOut()) {
       this.seriesOver = true;
@@ -120,7 +121,7 @@ class Series {
       } else {
         this.winner = p1.points > p2.points ? p1.username : p2.username;
         this.winByPoints = true;
-      } 
+      }
     } else {
       const winThreshold = this._getWinsNeededToClose();
       if (p1.wins >= winThreshold) {
