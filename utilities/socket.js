@@ -16,7 +16,7 @@ function configure(http) {
     socket.emit('user-request', socket.id, (user) => {
       socket.username = user.username;
       online[user.username] = user;
-      console.log('New player connected:'.green, user.username);
+      console.log('^[[1;32mNew player connected:', user.username);
     });
 
     // Update series object
@@ -96,7 +96,7 @@ function configure(http) {
     });
 
     socket.on('disconnecting', (reason) => {
-      console.log('Player disconnected:'.red, socket.username, reason);
+      console.log('^[[1;31mPlayer disconnected:', socket.username, reason);
       delete online[socket.username];
     });
   });
