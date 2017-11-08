@@ -1,9 +1,18 @@
 function configure(http) {
-  const io = require('socket.io')(http, { pingInterval: 10000, pingTimeout: 15000 });
+  const io = require('socket.io')(http, { pingInterval: 10000, pingTimeout: 20000 });
   const Series = require('./series');
   const Game = require('./game');
   const online = {};
   const waitingRoom = [];
+
+  // FgBlack = '\x1b[30m'
+  // FgRed = '\x1b[31m'
+  // FgGreen = '\x1b[32m'
+  // FgYellow = '\x1b[33m'
+  // FgBlue = '\x1b[34m'
+  // FgMagenta = '\x1b[35m'
+  // FgCyan = '\x1b[36m'
+  // FgWhite = '\x1b[37m'
 
   // WHERE ARE INDIVIDUAL GAME STATS BEING ADDED TO THE SERIES STATS???
   // SHOULD BE SERVER SIDE WHEN GAME IS SET TO GAMEOVER
@@ -12,6 +21,13 @@ function configure(http) {
 
   io.on('connection', (socket) => {
     console.log('\x1b[32m', 'New player connected:', socket.id);
+
+    // add sockets back into rooms if they got disconnected and are reconnecting
+
+
+
+
+
 
     // Request user info and add to online list
     socket.emit('user-request', socket.id, (user) => {
@@ -98,14 +114,5 @@ function configure(http) {
     });
   });
 };
-
-// FgBlack = '\x1b[30m'
-// FgRed = '\x1b[31m'
-// FgGreen = '\x1b[32m'
-// FgYellow = '\x1b[33m'
-// FgBlue = '\x1b[34m'
-// FgMagenta = '\x1b[35m'
-// FgCyan = '\x1b[36m'
-// FgWhite = '\x1b[37m'
 
 module.exports = { configure: configure };
