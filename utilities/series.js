@@ -64,10 +64,12 @@ class Series {
       roomName: this.roomName,
     };
     const game = new Game(settings);
-    console.log('\x1b[33m', 'Checkpoint :: new game', game);
+    console.log('\x1b[33m', 'Checkpoint :: new game');
     game.initializeGame(player1, player2);
-    console.log('\x1b[33m', 'Checkpoint :: game initialized', game);
+    console.log('\x1b[33m', 'Checkpoint :: game initialized');
+    console.log('\x1b[33m', 'Checkpoint :: all games before', this.games);
     this.games.push(game);
+    console.log('\x1b[33m', 'Checkpoint :: all games after', this.games);
   }
 
   _createInSeriesInstance(props) {
