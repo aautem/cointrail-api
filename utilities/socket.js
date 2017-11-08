@@ -66,7 +66,7 @@ function configure(http) {
     });
 
     socket.on('join-room', (roomName) => {
-      console.log('\x1b[34m', 'Joining room:', socket.username, '>>>' roomName);
+      console.log('\x1b[34m', 'Joining room:', socket.username, '>>>', roomName);
       socket.join(roomName);
     });
 
