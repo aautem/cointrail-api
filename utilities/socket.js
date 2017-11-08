@@ -11,7 +11,7 @@ function configure(http) {
   // SERVER SHOULD SEND BACK FINISHED GAMES WITH NEXT GAME INITIALIZED
 
   io.on('connection', (socket) => {
-    console.log('\x1b[32m', 'New player connected:', user.username);
+    console.log('\x1b[32m', 'New player connected:', socket.id);
 
     // Request user info and add to online list
     socket.emit('user-request', socket.id, (user) => {
