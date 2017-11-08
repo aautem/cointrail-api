@@ -63,7 +63,7 @@ class Series {
       timeLimit: this.timeLimit,
       roomName: this.roomName,
     };
-    const game = new Game(settings);
+    let game = new Game(settings);
     console.log('\x1b[33m', 'Checkpoint :: new game');
     game.initializeGame(player1, player2);
     console.log('\x1b[33m', 'Checkpoint :: game initialized');
