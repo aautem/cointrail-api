@@ -19,6 +19,13 @@ function configure(http) {
       console.log('New player connected:'.green, user.username);
     });
 
+    // Update series object
+    socket.on('start-next-game', (series, respond) => {
+      const updatedSeries = new Series(series);
+      updatedSeries.updateSeries();
+      respond(updatedSeries);
+    });
+
     // Join game or add to waiting room
     socket.on('join-game', (userData, respond) => {
       // check waiting room for other player
@@ -81,10 +88,9 @@ function configure(http) {
     });
 
     socket.on('drop-coin', (data) => {
-      console.log('*** DROP COIN ***', data.game, data.colId);
+      console.log('Coin dropped by'.blue, data.game.turn);
       const game = new Game(data.game);
       game.dropCoin(game.turn, data.colId);
-
       // emit updated game to room
       io.to(game.roomName).emit('game-update', game);
     });
