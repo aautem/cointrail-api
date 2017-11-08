@@ -106,6 +106,7 @@ class Game {
       if (winner) {
         this.turn = null;
         this.winner = winner;
+        this.players[winner].winner = true;
         this.gameOver = true;
       } else {
         const draw = this._checkForDraw();
