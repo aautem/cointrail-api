@@ -20,7 +20,6 @@ class Series {
       this.timeLimit = props.timeLimit;
       this.gamesPlayed = 0;
       this.games = [];
-      this.currentGame = null;
       this.winner = null;
       this.draw = false;
       this.seriesOver = null;
@@ -67,7 +66,6 @@ class Series {
     };
     let game = new Game(settings);
     game.initializeGame(player1, player2);
-    this.currentGame = game;
     this.games.push(game);
   }
 
@@ -77,7 +75,6 @@ class Series {
     this.timeLimit = props.timeLimit;
     this.gamesPlayed = props.gamesPlayed;
     this.games = props.games;
-    this.currentGame = props.currentGame;
     this.winner = props.winner;
     this.draw = props.draw;
     this.seriesOver = props.seriesOver;

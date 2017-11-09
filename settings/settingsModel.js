@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const helpers = require('../utilities/helpers');
 
 const SettingsSchema = new mongoose.Schema({
   username: {
@@ -12,7 +13,7 @@ const SettingsSchema = new mongoose.Schema({
   },
   seriesLength: {
     type: Number,
-    default: 7,
+    default: 2,
     required: true
   },
   timeLimit: {
@@ -22,12 +23,12 @@ const SettingsSchema = new mongoose.Schema({
   },
   color: {
     type: String,
-    default: '#3780B6',
+    default: helpers.getRandomColors()[0],
     required: true
   },
   altColor: {
     type: String,
-    default: '#71CFEE',
+    default: '#000BFC',
     required: true
   }
 });

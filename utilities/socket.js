@@ -24,11 +24,6 @@ function configure(http) {
 
     // add sockets back into rooms if they got disconnected and are reconnecting
 
-
-
-
-
-
     // Request user info and add to online list
     socket.emit('user-request', socket.id, (user) => {
       socket.username = user.username;
