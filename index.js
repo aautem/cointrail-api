@@ -24,7 +24,7 @@ require('./routes.js')(app, express);
 socket.configure(http);
 
 http.listen(port, () => {
-  console.log(`*** LISTENING ON PORT ${port} ***`);
+  console.log('\x1b[32m', 'Listening on port', port);
 });
 
 module.exports = http;

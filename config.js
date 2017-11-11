@@ -1,8 +1,5 @@
-const Series = require('./utilities/series');
-const Game = require('./utilities/series');
-const Player = require('./utilities/series');
-
 function loadConfig(app) {
+
   let config = {
     auth0CallbackUrl: process.env.AUTH0_CALLBACK_URL,
     auth0Id: process.env.AUTH0_CLIENT_ID,
@@ -11,11 +8,7 @@ function loadConfig(app) {
     mongoDbUri: process.env.MONGODB_URI,
     newRelicKey: process.env.NEW_RELIC_LICENSE_KEY,
     newRelicLog: process.env.NEW_RELIC_LOG,
-    paperTrailToken: process.env.PAPERTRAIL_API_TOKEN,
-    Series: Series,
-    Game: Game,
-    GamePlayer: Player.GamePlayer,
-    SeriesPlayer: Player.SeriesPlayer,
+    paperTrailToken: process.env.PAPERTRAIL_API_TOKEN
   };
 
   app.get('/config/client', (req, res) => {

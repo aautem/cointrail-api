@@ -3,26 +3,17 @@ function configure(http) {
   const Series = require('./series');
   const Game = require('./game');
   const online = {};
-  const waitingRoom = [];
-
-  // FgBlack = '\x1b[30m'
-  // FgRed = '\x1b[31m'
-  // FgGreen = '\x1b[32m'
-  // FgYellow = '\x1b[33m'
-  // FgBlue = '\x1b[34m'
-  // FgMagenta = '\x1b[35m'
-  // FgCyan = '\x1b[36m'
-  // FgWhite = '\x1b[37m'
+  const playerWaiting = null;
 
   // WHERE ARE INDIVIDUAL GAME STATS BEING ADDED TO THE SERIES STATS???
   // SHOULD BE SERVER SIDE WHEN GAME IS SET TO GAMEOVER
 
   // SERVER SHOULD SEND BACK FINISHED GAMES WITH NEXT GAME INITIALIZED
 
+  // add sockets back into rooms if they got disconnected and are reconnecting
+
   io.on('connection', (socket) => {
     console.log('\x1b[32m', 'New player connected:', socket.id);
-
-    // add sockets back into rooms if they got disconnected and are reconnecting
 
     // Request user info and add to online list
     socket.emit('user-request', socket.id, (user) => {
@@ -30,75 +21,63 @@ function configure(http) {
       online[user.username] = user;
     });
 
-    // Update series object
-    socket.on('start-next-game', (series, respond) => {
-      const updatedSeries = new Series(series);
-      respond(updatedSeries);
-    });
-
     // Join game or add to waiting room
-    socket.on('join-game', (userData, respond) => {
+    socket.on('join-game', (player) => {
       // check waiting room for other player
-      console.log('\x1b[35m', 'Request to join game:', userData.username);
+      console.log('\x1b[34m', 'Request to join game:', player.username);
 
-      // userData EXAMPLE:
-      // {id: 'LxKOP7TqMVBDUzimAAAA',
+      // id: 'LxKOP7TqMVBDUzimAAAA',
       // username: 'aautem',
       // avatarUrl: 'https://s.gravatar.com,
       // inGame: false,
-      // settings: {
+      // settings:
       //   boardSize: 4,
       //   seriesLength: 7,
       //   timeLimit: false,
       //   color: '#71CFEE',
-      //   altColor: '#71CFEE'}}
+      //   altColor: '#71CFEE'
 
-      if (!waitingRoom.length) {
-        waitingRoom.push(userData);
-        respond('waiting');
+      if (!playerWaiting) {
+        playerWaiting = player;
       } else {
-        const player1 = waitingRoom.pop();
-        const player2 = userData;
+        const player1 = playerWaiting;
+        const player2 = player;
+        playerWaiting = null;
+
         player1.inGame = true;
         player2.inGame = true;
 
-        // user player1 game settings
-        const series = new Series({
-          seriesLength: player1.settings.seriesLength,
-          boardSize: player1.settings.boardSize,
-          timeLimit: player1.settings.timeLimit,
-        });
-        series.initializeSeries(player1, player2);
+        const players = {
+          p1: player1,
+          p2: player2,
+        };
 
         // emit to players
-        io.to(player1.id).to(player2.id).emit('series-created', series);
-        respond('series created');
+        io.to(player1.id).to(player2.id).emit('game-joined', players);
       }
     });
 
-    socket.on('join-room', (roomName) => {
-      console.log('\x1b[34m', 'Joining room:', socket.username, '>>>', roomName);
-      socket.join(roomName);
+    // Update series object
+    // socket.on('start-next-game', (series, respond) => {
+    //   const updatedSeries = new Series(series);
+    //   respond(updatedSeries);
+    // });
+
+    socket.on('join-room', (roomname) => {
+      console.log('\x1b[34m', 'Joining room:', socket.username, '>>>', roomname);
+      socket.join(roomname);
     });
 
-    socket.on('game-request-timeout', (id) => {
-      console.log('\x1b[31m', 'Game request timeout:', id);
-      if (waitingRoom.length === 1 && waitingRoom[0].id === id) {
-        waitingRoom.pop();
-      }
-    });
-
-    socket.on('cancel-game', (username) => {
+    socket.on('cancel-game-request', (username) => {
       console.log('\x1b[31m', 'Game request cancelled:', username);
-      if (waitingRoom.length === 1 && waitingRoom[0].username === username) {
-        waitingRoom.pop();
+      if (playerWaiting.username === username) {
+        playerWaiting = null;
       }
     });
 
-    socket.on('drop-coin', (data) => {
-      console.log('\x1b[34m', 'Coin dropped by', data.game.turn);
-      const game = new Game(data.game);
-      game.dropCoin(game.turn, data.colId);
+    socket.on('drop-coin', (game) => {
+      console.log('\x1b[34m', 'Coin dropped in', game.roomName);
+
       // emit updated game to room
       io.to(game.roomName).emit('game-update', game);
     });
