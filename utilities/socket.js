@@ -3,7 +3,7 @@ function configure(http) {
   const Series = require('./series');
   const Game = require('./game');
   const online = {};
-  const playerWaiting = null;
+  let playerWaiting = null;
 
   // WHERE ARE INDIVIDUAL GAME STATS BEING ADDED TO THE SERIES STATS???
   // SHOULD BE SERVER SIDE WHEN GAME IS SET TO GAMEOVER
