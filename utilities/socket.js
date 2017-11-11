@@ -70,7 +70,7 @@ function configure(http) {
 
     socket.on('cancel-game-request', (username) => {
       console.log('\x1b[31m', 'Game request cancelled:', username);
-      if (playerWaiting.username === username) {
+      if (playerWaiting && playerWaiting.username === username) {
         playerWaiting = null;
       }
     });
