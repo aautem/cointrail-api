@@ -15,7 +15,7 @@ const Player = require('./player');
 // turn: null,
 // disconnection: false,
 
-export default class Game {
+class Game {
   constructor(props) {
     if (props.turn) {
       this._buildGameInProgress(props);

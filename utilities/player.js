@@ -8,7 +8,7 @@
 // losses: 0,
 // draws: 0,
 
-export class GamePlayer {
+class GamePlayer {
   constructor(props) {
     this.id = props.id;
     this.username = props.username;
@@ -23,7 +23,7 @@ export class GamePlayer {
   }
 }
 
-export class SeriesPlayer extends GamePlayer {
+class SeriesPlayer extends GamePlayer {
   constructor(props) {
     super(props);
     this.wins = 0;
