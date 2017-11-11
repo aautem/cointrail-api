@@ -1,39 +1,51 @@
-//   players: OBJECT
-//   boardSize: NUMBER
-//   turn?: STRING
-//   roomName: STRING
-//   board: ARRAY [[ STRING ]]
-//   boardPoints: ARRAY [[ NUMBER ]]
-//   timeLimit: BOOLEAN
-//   gameOver: BOOLEAN
-//   winner?: STRING
-//   draw: BOOLEAN
-//   winByPoints: BOOLEAN
-
 const Player = require('./player');
 
-class Game {
+// mode: null, // series | solo
+// roomName: null,
+// boardSize: null,
+// timeLimit: null,
+// winner: null,
+// draw: false,
+// gameOver: false,
+// winByPoints: false,
+// winByConnect: false,
+// board: null,
+// boardPoints: null,
+// players: null,
+// turn: null,
+// disconnection: false,
+
+export default class Game {
   constructor(props) {
-    if (!props.turn) {
+    if (props.turn) {
+      this._buildGameInProgress(props);
+    } else {
+      this.mode = props.mode;
       this.roomName = props.roomName;
       this.boardSize = props.boardSize;
       this.timeLimit = props.timeLimit;
       this.winner = null;
       this.draw = false;
       this.gameOver = false;
+      this.winByConnect = false;
       this.winByPoints = false;
+      this.disconnection = false;
 
       // initialized later
       this.board = null;
       this.boardPoints = null;
       this.players = null;
-      this.turn = null
-    } else {
-      this._createInGameInstance(props);
+      this.turn = null;
     }
   }
 
-  initializeGame(player1, player2) {
+  initializeSoloGame(player) {
+    this._initializeBoard();
+    this._initializeBoardPoints();
+    this._initializePlayers(player);
+  }
+
+  initializeSeriesGame(player1, player2) {
     this._initializeBoard();
     this._initializeBoardPoints();
     this._initializePlayers(player1, player2);
@@ -85,28 +97,59 @@ class Game {
   }
 
   _initializePlayers(player1, player2) {
-    const players = {};
-    players[player1.username] = new Player(player1);
-    players[player2.username] = new Player(player2);
-    this.turn = player1.username;
-    this.players = players;
+    if (!player2) {
+      const players = {};
+      const cpu = this._getRandomProfile();
+      players[cpu.username] = new GamePlayer(cpu);
+      players[player1.username] = new GamePlayer(player1);
+      this.players = players;
+      this.turn = player1.username;
+    } else {
+      const players = {};
+      players[player1.username] = new GamePlayer(player1);
+      players[player2.username] = new GamePlayer(player2);
+      this.turn = player1.username;
+      this.players = players;
+    }
   }
 
-  dropCoin(username, colId) {
+  _getRandomProfile() {
+    const profiles = [
+      {
+        id: 'cpu', username: 'ladylexy', color: 'orange',
+        avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+      },
+      {
+        id: 'cpu', username: 'kfriedson', color: 'red',
+        avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/128.jpg',
+      },
+      {
+        id: 'cpu', username: 'brynn', color: 'green',
+        avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+      },
+      {
+        id: 'cpu', username: 'adhamdannaway', color: 'blue',
+        avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+      }
+    ];
+    const index = Math.floor(Math.random() * (profiles.length - 1));
+    return profiles[index];
+  }
+
+  dropCoin(colId) {
     const rowId = this._findEmptyRowId(colId);
 
     if (rowId !== null) {
       const points = this._getBoardPoints(rowId, colId);
-      const player = this.players[username];
-      player.points += points;
-      this.players[username] = player;
-      this._addPlayerToBoard(username, rowId, colId);
+      this.players[this.turn].points += points;
+      this._addToBoard(rowId, colId);
 
-      const winner = this._getGameWinner();
+      const winner = this._getConnectWinner();
       if (winner) {
         this.turn = null;
         this.winner = winner;
         this.players[winner].winner = true;
+        this.winByConnect = true;
         this.gameOver = true;
       } else {
         const draw = this._checkForDraw();
@@ -115,7 +158,7 @@ class Game {
           if (winnerByPoints) {
             this.turn = null;
             this.winner = winnerByPoints;
-            this.winnerByPoints = true;
+            this.winByPoints = true;
             this.gameOver = true;
           } else {
             this.turn = null;
@@ -131,6 +174,20 @@ class Game {
     }
   }
 
+  getOpenColumn() {
+    const colIds = [];
+    this.board[0].forEach((column, i) => {
+      if (!column) {
+        colIds.push(i);
+      }
+    });
+    if (colIds.length) {
+      const random = Math.floor(Math.random() * (colIds.length - 1));
+      return colIds[random];
+    }
+    return null;
+  }
+
   _findEmptyRowId(colId) {
     let emptyRowId = null;
     for (let rowId = this.boardSize - 1; rowId >= 0; rowId --) {
@@ -141,15 +198,15 @@ class Game {
     return emptyRowId;
   }
 
-  _addPlayerToBoard(username, rowId, colId) {
-    this.board[rowId][colId] = username;
+  _addToBoard(rowId, colId) {
+    this.board[rowId][colId] = this.turn;
   }
 
   _getBoardPoints(rowId, colId) {
     return this.boardPoints[rowId][colId];
   }
 
-  _getGameWinner() {
+  _getConnectWinner() {
     const rows = this.board.slice();
     const columns = this._getWinningColumns();
     const diagonals = this._getWinningDiagonals();
@@ -222,14 +279,17 @@ class Game {
     return player1.points > player2.points ? player1.username : player2.username;
   }
 
-  _createInGameInstance(props) {
+  _buildGameInProgress(props) {
+    this.mode = props.mode;
     this.roomName = props.roomName;
     this.boardSize = props.boardSize;
     this.timeLimit = props.timeLimit;
     this.winner = props.winner;
     this.draw = props.draw;
     this.gameOver = props.gameOver;
+    this.winByConnect = props.winByConnect;
     this.winByPoints = props.winByPoints;
+    this.disconnection = props.disconnection;
     this.board = props.board;
     this.boardPoints = props.boardPoints;
     this.players = props.players;

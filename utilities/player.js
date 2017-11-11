@@ -1,30 +1,21 @@
-// GAME PLAYER
-// id: NUMBER
-// username: STRING
-// avatarUrl: STRING
-// gamePieceColor: STRING
-// points: NUMBER
-// winner: BOOLEAN
+// id: null,
+// username: null,
+// color: null,
+// avatarUrl: null,
+// points: 0
+// winner: false,
+// wins: 0,
+// losses: 0,
+// draws: 0,
 
-// SERIES PLAYER EXTENDS GAME PLAYER
-// wins: NUMBER
-// losses: NUMBER
-// draws: NUMBER
-
-class Player {
+export class GamePlayer {
   constructor(props) {
     this.id = props.id;
     this.username = props.username;
     this.avatarUrl = props.avatarUrl;
-    this.gamePieceColor = props.gamePieceColor;
+    this.color = props.color;
     this.points = 0;
     this.winner = false;
-  }
-
-  initializeSeriesPlayer() {
-    this.wins = 0;
-    this.losses = 0;
-    this.draws = 0;
   }
 
   redeemPoints(points) {
@@ -32,4 +23,16 @@ class Player {
   }
 }
 
-module.exports = Player;
+export class SeriesPlayer extends GamePlayer {
+  constructor(props) {
+    super(props);
+    this.wins = 0;
+    this.losses = 0;
+    this.draws = 0;
+  }
+}
+
+module.exports = {
+  GamePlayer: GamePlayer,
+  SeriesPlayer: SeriesPlayer,
+};
