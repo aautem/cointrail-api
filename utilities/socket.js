@@ -60,11 +60,13 @@ function configure(http) {
 
     // check if updated series has already been emitted for this round
     socket.on('updated-series', (series) => {
-      const updated = currentGames[series.roomName].seriesUpdated;
-      if (!updated) {
-        io.to(series.roomName).emit('series-update', series);
-      }
-      currentGames[series.roomName].seriesUpdated = !updated;
+      io.to(series.roomName).emit('series-update', series);
+
+      // const updated = currentGames[series.roomName].seriesUpdated;
+      // if (!updated) {
+      //   io.to(series.roomName).emit('series-update', series);
+      // }
+      // currentGames[series.roomName].seriesUpdated = !updated;
     });
 
     socket.on('join-room', (roomname) => {
