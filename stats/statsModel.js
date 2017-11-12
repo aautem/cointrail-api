@@ -30,12 +30,22 @@ const StatsSchema = new mongoose.Schema({
     default: 0,
     required: true
   },
+  seriesPlayed: {
+    type: Number,
+    default: 0,
+    required: true
+  },
   winsByDefault: {
     type: Number,
     default: 0,
     required: true
   },
   winsByPoints: {
+    type: Number,
+    default: 0,
+    required: true
+  },
+  winsByConnect: {
     type: Number,
     default: 0,
     required: true
