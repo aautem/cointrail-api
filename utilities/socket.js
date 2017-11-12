@@ -3,6 +3,7 @@ function configure(http) {
   const Series = require('./series');
   const Game = require('./game');
   const online = {};
+  const currentGames = {};
   let playerWaiting = null;
 
   // WHERE ARE INDIVIDUAL GAME STATS BEING ADDED TO THE SERIES STATS???
@@ -57,14 +58,25 @@ function configure(http) {
       }
     });
 
-    // Update series object
-    // socket.on('start-next-game', (series, respond) => {
-    //   const updatedSeries = new Series(series);
-    //   respond(updatedSeries);
-    // });
+    // check if updated series has already been emitted for this round
+    socket.on('updated-series', (series) => {
+      const updated = currentGames[series.roomName].seriesUpdated;
+      if (!updated) {
+        io.to(series.roomName).emit('series-update', series);
+      }
+      currentGames[series.roomName].seriesUpdated = !updated;
+    });
 
     socket.on('join-room', (roomname) => {
       console.log('\x1b[34m', 'Joining room:', socket.username, '>>>', roomname);
+
+      // set up series object on server to keep track series updates
+      if (!currentGames[roomname]) {
+        currentGames[roomname] = {
+          seriesUpdated: false,
+        };
+      }
+
       socket.join(roomname);
     });
 
