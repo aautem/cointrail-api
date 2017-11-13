@@ -4,7 +4,7 @@ module.exports = {
   loadSettings: (req, res) => {
     Settings.findOne({ username: req.params.username }, (err, data) => {
       if (err) {
-        console.log('*** ERROR LOADING SETTINGS ***', err);
+        console.log('\x1b[34m', 'Error loading settings:', err);
       } else if (!data) {
         const settings = new Settings({
           username: req.params.username,
@@ -12,14 +12,14 @@ module.exports = {
 
         settings.save((err, data) => {
           if (err) {
-            console.log('*** ERROR CREATING SETTINGS ***', err);
+            console.log('\x1b[34m', 'Error creating settings:', err);
           } else {
-            console.log('*** SETTINGS INITIALIZED ***', data);
+            console.log('\x1b[34m', 'Settings initialized for ', data.username);
             res.end(JSON.stringify(data));
           }
         })
       } else {
-        console.log('*** SETTINGS LOADED ***', data);
+        console.log('Settings loaded for', data.username);
         res.end(JSON.stringify(data));
       }
     });
@@ -27,11 +27,11 @@ module.exports = {
   updateSettings: (req, res) => {
     Settings.findOneAndUpdate({ username: req.params.username }, req.body.settings, { new: true }, (err, data) => {
       if (err) {
-        console.log('*** ERROR UPDATING SETTINGS ***', err);
+        console.log('\x1b[34m', 'Error updating settings:', err);
       } else if (!data) {
-        console.log('*** NO USER SETTINGS ***');
+        console.log('\x1b[34m', 'No user settings found', err);
       } else {
-        console.log('*** SETTINGS UPDATED ***', data);
+        console.log('\x1b[34m', 'Settings updated for ', data.username);
         res.end(JSON.stringify(data));
       }
     });

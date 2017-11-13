@@ -1,12 +1,10 @@
 function configure(http) {
   const io = require('socket.io')(http, { pingInterval: 10000, pingTimeout: 20000 });
-  const Series = require('./series');
-  const Game = require('./game');
   const online = {};
   const currentGames = {};
   let playerWaiting = null;
 
-  // add sockets back into rooms if they got disconnected and are reconnecting
+  // add sockets back into rooms if they get disconnected while playing and reconnect
 
   io.on('connection', (socket) => {
     console.log('\x1b[32m', 'New player connected:', socket.id);
@@ -28,7 +26,6 @@ function configure(http) {
       // inGame: false,
       // settings:
       //   boardSize: 4,
-      //   seriesLength: 7,
       //   timeLimit: false,
       //   color: '#71CFEE',
       //   altColor: '#71CFEE'
