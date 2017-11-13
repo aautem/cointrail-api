@@ -19,7 +19,7 @@ module.exports = {
           }
         })
       } else {
-        console.log('*** STATS LOADED ***', data);
+        console.log('Stats loaded for', data.username);
         res.end(JSON.stringify(data));
       }
     });

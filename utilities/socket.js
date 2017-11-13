@@ -6,11 +6,6 @@ function configure(http) {
   const currentGames = {};
   let playerWaiting = null;
 
-  // WHERE ARE INDIVIDUAL GAME STATS BEING ADDED TO THE SERIES STATS???
-  // SHOULD BE SERVER SIDE WHEN GAME IS SET TO GAMEOVER
-
-  // SERVER SHOULD SEND BACK FINISHED GAMES WITH NEXT GAME INITIALIZED
-
   // add sockets back into rooms if they got disconnected and are reconnecting
 
   io.on('connection', (socket) => {
@@ -24,7 +19,7 @@ function configure(http) {
 
     // Join game or add to waiting room
     socket.on('join-game', (player) => {
-      // check waiting room for other player
+
       console.log('\x1b[34m', 'Request to join game:', player.username);
 
       // id: 'LxKOP7TqMVBDUzimAAAA',
@@ -58,26 +53,8 @@ function configure(http) {
       }
     });
 
-    // check if updated series has already been emitted for this round
-    socket.on('updated-series', (series) => {
-      io.to(series.roomName).emit('series-update', series);
-
-      // const updated = currentGames[series.roomName].seriesUpdated;
-      // if (!updated) {
-      //   io.to(series.roomName).emit('series-update', series);
-      // }
-      // currentGames[series.roomName].seriesUpdated = !updated;
-    });
-
     socket.on('join-room', (roomname) => {
       console.log('\x1b[34m', 'Joining room:', socket.username, '>>>', roomname);
-
-      // set up series object on server to keep track series updates
-      if (!currentGames[roomname]) {
-        currentGames[roomname] = {
-          seriesUpdated: false,
-        };
-      }
 
       socket.join(roomname);
     });
@@ -98,6 +75,8 @@ function configure(http) {
 
     socket.on('disconnecting', (reason) => {
       console.log('\x1b[31m', 'Player disconnected:', socket.username, reason);
+
+      // online sockets are being kept track of on the io object
       delete online[socket.username];
     });
   });
