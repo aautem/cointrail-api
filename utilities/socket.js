@@ -11,21 +11,16 @@ function configure(http) {
     socket.emit('user-request', socket.id, (user) => {
       socket.username = user.username;
       socket.inGame = false;
-    });
 
-    socket.on('get-online-players', (data, respond) => {
-      console.log('\x1b[32m', 'Socket Server:', io);
-
-      const online = [];
-      const sockets = io.sockets.sockets;
-
-      for (let id in sockets) {
-        online.push(sockets[id].username);
+      let playersOnline = [];
+      let onlineSockets = io.sockets.sockets;
+      for (let id in onlineSockets) {
+        playersOnline.push(onlineSockets[id].username);
       }
+      socket.broadcast.emit('online-players-update', playersOnline);
+      socket.emit('online-players-update', playersOnline);
 
-      console.log('\x1b[32m', 'Online Players:', online);
-
-      respond(online);
+      console.log('\x1b[32m', 'Online Players:', playersOnline);
     });
 
     // Join game or add to waiting room
@@ -95,6 +90,16 @@ function configure(http) {
 
     socket.on('disconnecting', (reason) => {
       console.log('\x1b[31m', 'Player disconnected:', socket.username, reason);
+
+      let onlineSockets = io.sockets.sockets;
+      for (let id in onlineSockets) {
+        if (onlineSockets[id].id !== socket.id) {
+          playersOnline.push(onlineSockets[id].username);
+        }
+      }
+      socket.broadcast.emit('online-players-update', playersOnline);
+
+      console.log('\x1b[32m', 'Online Players:', playersOnline);
     });
   });
 };
