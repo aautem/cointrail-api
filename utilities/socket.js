@@ -11,17 +11,19 @@ function configure(http) {
     socket.emit('user-request', socket.id, (user) => {
       socket.username = user.username;
       socket.inGame = false;
+      console.log('\x1b[32m', 'My socket:', socket);
+      console.log('\x1b[32m', 'Connected Sockets:', io.sockets.sockets);
     });
 
-    socket.on('get-online-players', (res, respond) => {
-      console.log('\x1b[32m', 'Socket Server:', io);
+    // socket.on('get-online-players', (res, respond) => {
+    //   console.log('\x1b[32m', 'Socket Server:', io);
 
-      const connectedSockets = io.sockets.sockets;
+    //   const connectedSockets = io.sockets.sockets;
 
-      console.log('\x1b[32m', 'Connected Sockets:', connectedSockets);
+    //   console.log('\x1b[32m', 'Connected Sockets:', connectedSockets);
 
-      // respond();
-    });
+    //   // respond();
+    // });
 
     // Join game or add to waiting room
     socket.on('join-game', (player) => {
