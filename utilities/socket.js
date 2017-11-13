@@ -1,6 +1,5 @@
 function configure(http) {
   const io = require('socket.io')(http, { pingInterval: 10000, pingTimeout: 20000 });
-  const online = {};
   let playerWaiting = null;
 
   // add sockets back into rooms if they get disconnected while playing and reconnect
@@ -12,6 +11,16 @@ function configure(http) {
     socket.emit('user-request', socket.id, (user) => {
       socket.username = user.username;
       socket.inGame = false;
+    });
+
+    socket.on('get-online-players', (res, respond) => {
+      console.log('\x1b[32m', 'Socket Server:', io);
+
+      const connectedSockets = io.sockets.sockets;
+
+      console.log('\x1b[32m', 'Connected Sockets:', connectedSockets);
+
+      // respond();
     });
 
     // Join game or add to waiting room
