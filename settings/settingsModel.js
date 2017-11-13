@@ -11,11 +11,6 @@ const SettingsSchema = new mongoose.Schema({
     default: 4,
     required: true
   },
-  seriesLength: {
-    type: Number,
-    default: 2,
-    required: true
-  },
   timeLimit: {
     type: Boolean,
     default: false,
