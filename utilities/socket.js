@@ -1,7 +1,6 @@
 function configure(http) {
   const io = require('socket.io')(http, { pingInterval: 10000, pingTimeout: 20000 });
   const online = {};
-  const currentGames = {};
   let playerWaiting = null;
 
   // add sockets back into rooms if they get disconnected while playing and reconnect
@@ -9,10 +8,10 @@ function configure(http) {
   io.on('connection', (socket) => {
     console.log('\x1b[32m', 'New player connected:', socket.id);
 
-    // Request user info and add to online list
+    // Request user info and add to socket
     socket.emit('user-request', socket.id, (user) => {
       socket.username = user.username;
-      online[user.username] = user;
+      socket.inGame = false;
     });
 
     // Join game or add to waiting room
@@ -70,11 +69,18 @@ function configure(http) {
       io.to(game.roomName).emit('game-update', game);
     });
 
+    socket.on('end-game', (roomName) => {
+      console.log('\x1b[34m', 'Game ended: ', roomName);
+
+      socket.leave(roomName);
+      socket.inGame = false;
+
+      // let other play know game is over
+      io.to(roomName).emit('game-over', socket.username);
+    });
+
     socket.on('disconnecting', (reason) => {
       console.log('\x1b[31m', 'Player disconnected:', socket.username, reason);
-
-      // online sockets are being kept track of on the io object
-      delete online[socket.username];
     });
   });
 };
