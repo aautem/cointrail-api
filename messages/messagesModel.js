@@ -5,7 +5,7 @@ const MessagesSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  messages: [{ type: String, to: String, from: String, msg: String }]
+  messages: []
 });
 
 module.exports = mongoose.model('Messages', MessagesSchema);
