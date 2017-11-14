@@ -40,7 +40,7 @@ module.exports = {
 
         console.log('\x1b[34m', 'New messages:', messages);
 
-        Messages.findOneAndUpdate({ username: req.params.username }, messages, { new: true }, (err, data) => {
+        Messages.findOneAndUpdate({ username: req.params.username }, { messages: messages }, { new: true }, (err, data) => {
           if (err) {
             console.log('\x1b[34m', 'Error updating messages:', err);
           } else if (!data) {
