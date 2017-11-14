@@ -9,6 +9,7 @@ module.exports = (app, express) => {
   app.get('/api/user/:username', userCtrl.findUser);
   app.put('/api/user/:username', userCtrl.updateUser);
 
+  app.get('/api/messages/:username', messagesCtrl.loadMessages);
   app.post('/api/messages/:username', messagesCtrl.postMessage);
 
   app.get('/api/stats/:username', statsCtrl.loadStats);
