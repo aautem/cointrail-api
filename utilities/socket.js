@@ -37,15 +37,14 @@ function configure(http) {
 
       console.log('\x1b[34m', 'Request to join game:', player.username);
 
-      // id: 'LxKOP7TqMVBDUzimAAAA',
-      // username: 'aautem',
-      // avatarUrl: 'https://s.gravatar.com,
-      // inGame: false,
-      // settings:
-      //   boardSize: 4,
-      //   timeLimit: false,
-      //   color: '#71CFEE',
-      //   altColor: '#71CFEE'
+      // socketId
+      // username
+      // avatarUrl
+      // settings
+      //   boardSize
+      //   timeLimit
+      //   color
+      //   altColor
 
       if (!playerWaiting) {
         playerWaiting = player;
@@ -63,7 +62,7 @@ function configure(http) {
         };
 
         // emit to players
-        io.to(player1.id).to(player2.id).emit('game-joined', players);
+        io.to(player1.socketId).to(player2.socketId).emit('game-joined', players);
       }
     });
 
@@ -75,6 +74,7 @@ function configure(http) {
 
     socket.on('cancel-game-request', (username) => {
       console.log('\x1b[31m', 'Game request cancelled:', username);
+
       if (playerWaiting && playerWaiting.username === username) {
         playerWaiting = null;
       }
@@ -93,12 +93,12 @@ function configure(http) {
       socket.leave(roomName);
       socket.inGame = false;
 
-      // let other play know game is over
+      // let other player know game is over
       io.to(roomName).emit('game-over', socket.username);
     });
 
     socket.on('disconnecting', (reason) => {
-      console.log('\x1b[31m', 'Player disconnected:', socket.username, reason);
+      console.log('\x1b[31m', socket.username, 'disconnected:', reason);
 
       playersOnline = playersOnline.filter((username) => {
         return username !== socket.username;
