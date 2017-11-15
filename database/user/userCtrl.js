@@ -1,4 +1,5 @@
 const User = require('./userModel');
+const mongoose = require('mongoose');
 
 module.exports = {
   saveUser: (req, res) => {
@@ -33,7 +34,7 @@ module.exports = {
         res.end(new Error('User does not exist.'));
       } else {
         // Find any user in the database with an id in the friends array
-        User.find({ '_id': { $in: user.friends.map(id => new ObjectId(id)) }}, (err, friends) => {
+        User.find({ '_id': { $in: user.friends.map(id => mongoose.Types.ObjectId(id)) }}, (err, friends) => {
           if (err) {
             console.log('\x1b[31m', 'Error loading friends:', err);
             res.end(JSON.stringify(err));

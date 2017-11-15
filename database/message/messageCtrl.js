@@ -1,9 +1,10 @@
 const Message = require('./messageModel');
+const mongoose = require('mongoose');
 
 module.exports = {
   loadMessages: (req, res) => {
     const id = req.params.id;
-    Message.find({ to: new ObjectId(id) }, (err, messages) => {
+    Message.find({ to: mongoose.Types.ObjectId(id) }, (err, messages) => {
       if (err) {
         console.log('\x1b[31m', 'Error loading messages:', err);
         res.end(JSON.stringify(err));
@@ -19,8 +20,8 @@ module.exports = {
       res.end(new Error('Data missing from message.'));
     } else {
       const message = new Message({
-        to: new ObjectId(req.body.to),
-        from: new ObjectId(req.body.from),
+        to: mongoose.Types.ObjectId(req.body.to),
+        from: mongoose.Types.ObjectId(req.body.from),
         type: req.body.type,
         message: req.body.message,
       });
