@@ -11,11 +11,11 @@ function configure(http) {
     // Request user info and add to socket
     socket.emit('user-request', socket.id, (user) => {
 
-      // username:
-      // auth0Id:
-      // socketId:
-      // avatarUrl:
-      // online:
+      // username
+      // auth0Id
+      // socketId
+      // avatarUrl
+      // online
 
       socket.username = user.username;
       socket.auth0Id = user.auth0Id;

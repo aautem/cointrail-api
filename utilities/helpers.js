@@ -11,12 +11,12 @@ const altColors = [
 ];
 
 const getColor = () => {
-  let random = Math.floor(Math.random() * colors.length);
+  let random = Math.floor(Math.random() * (colors.length - 1));
   return colors[random];
 }
 
 const getAltColor = () => {
-  let random = Math.floor(Math.random() * altColors.length);
+  let random = Math.floor(Math.random() * (altColors.length - 1));
   return altColors[random];
 }
 
