@@ -1,6 +1,6 @@
 function configure(http) {
   const io = require('socket.io')(http, { pingInterval: 10000, pingTimeout: 20000 });
-  const playersOnline = [];
+  let playersOnline = [];
   let playerWaiting = null;
 
   // Add sockets back into rooms if they get disconnected while playing and reconnect
