@@ -4,6 +4,10 @@ module.exports = {
   saveUser: (req, res) => {
     const auth0Id = req.params.auth0Id;
     const update = req.body;
+
+    console.log('\x1b[34m', 'Saving user:', req.params);
+    console.log('Request body:', req.body);
+
     User.findOneAndUpdate({ auth0Id: auth0Id }, update, {
       new: true,
       upsert: true,
