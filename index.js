@@ -7,10 +7,10 @@ const morgan = require('morgan');
 const port = process.env.PORT || 3000;
 const config = require('./config');
 const socket = require('./utilities/socket');
-const constants = require('./const');
+const constants = require('./utilities/const');
 
 // start database
-require('./db.js');
+require('./database/db.js');
 
 // middleware
 app.use(morgan('dev'));
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 });
 
 config.loadConfig(app);
-require('./routes.js')(app, express);
+require('./database/routes.js')(app, express);
 socket.configure(http);
 
 http.listen(port, () => {
