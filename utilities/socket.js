@@ -100,13 +100,10 @@ function configure(http) {
     socket.on('disconnecting', (reason) => {
       console.log('\x1b[31m', 'Player disconnected:', socket.username, reason);
 
-      const playersOnline = [];
-      let onlineSockets = io.sockets.sockets;
-      for (let id in onlineSockets) {
-        if (onlineSockets[id].id !== socket.id) {
-          playersOnline.push(onlineSockets[id].username);
-        }
-      }
+      playersOnline = playersOnline.filter((username) => {
+        return username !== socket.username;
+      });
+
       socket.broadcast.emit('online-players-update', playersOnline);
 
       console.log('\x1b[32m', 'Online Players:', playersOnline);
