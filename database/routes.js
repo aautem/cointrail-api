@@ -3,8 +3,7 @@ const messageCtrl = require('./message/messageCtrl');
 
 module.exports = (app, express) => {
   // LOAD & SAVE USER (avatar, socketId, inGame, online)
-  app.get('/api/users/:username', userCtrl.loadUser);
-  app.put('/api/users/:id', userCtrl.saveUser);
+  app.put('/api/users/:auth0Id', userCtrl.saveUser);
 
   // LOAD/UPDATE/DELETE FRIENDS
   app.get('/api/friends/:id', userCtrl.loadFriends);

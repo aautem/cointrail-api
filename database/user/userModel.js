@@ -7,13 +7,17 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     required: true
   },
+  auth0Id: {
+    type: String,
+    required: true
+  },
   socketId: {
     type: String,
     required: true
   },
   avatarUrl: {
     type: String,
-    default: '',
+    default: 'https://raw.githubusercontent.com/aautem/contrail-client/master/src/assets/cointrail.png',
     required: true
   },
   inGame: {

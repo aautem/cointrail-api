@@ -17,7 +17,7 @@ module.exports = {
   createMessage: (req, res) => {
     if (!req.body.to || !req.body.from || !req.body.message) {
       console.log('\x1b[31m', 'Data missing from message.');
-      res.end(JSON.stringify('Data missing from message.'));
+      res.end(new Error('Data missing from message.'));
     } else {
       const message = new Message({
         to: mongoose.Schema.Types.ObjectId(req.body.to),

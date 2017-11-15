@@ -1,34 +1,19 @@
 const User = require('./userModel');
 
 module.exports = {
-  loadUser: (req, res) => {
-    const username = req.params.username;
-    User.findOne({ username: username }, (err, user) => {
-      if (err) {
-        console.log('\x1b[31m', 'Error loading user:', err);
-        res.end(JSON.stringify(err));
-      } else if (!user) {
-        console.log('\x1b[31m', 'User does not exist.');
-        res.end(JSON.stringify('User does not exist.'));
-      } else {
-        console.log('\x1b[34m', 'User loaded:', user.username);
-        res.end(JSON.stringify(user));
-      }
-    });
-  },
   saveUser: (req, res) => {
-    const username = req.params.username;
+    const auth0Id = req.params.auth0Id;
     const update = req.body;
-    User.findOneAndUpdate({ username: username }, update, {
+    User.findOneAndUpdate({ auth0Id: auth0Id }, update, {
       new: true,
       upsert: true,
       setDefaultsOnInsert: true
     }, (err, user) => {
       if (err) {
-        console.log('\x1b[31m', 'Error updating user:', err);
+        console.log('\x1b[31m', 'Error saving user:', err);
         res.end(JSON.stringify(err));
       } else {
-        console.log('\x1b[34m', 'User updated:', user.username);
+        console.log('\x1b[34m', 'User saved:', user.username);
         res.end(JSON.stringify(user));
       }
     });
@@ -41,7 +26,7 @@ module.exports = {
         res.end(JSON.stringify(err));
       } else if (!user) {
         console.log('\x1b[31m', 'User does not exist.');
-        res.end(JSON.stringify('User does not exist.'));
+        res.end(new Error('User does not exist.'));
       } else {
         // Find any user in the database with an id in the friends array
         User.find({ '_id': { $in: user.friends }}, (err, friends) => {
@@ -65,7 +50,7 @@ module.exports = {
         res.end(JSON.stringify(err));
       } else if (!user1) {
         console.log('\x1b[31m', 'User does not exist.');
-        res.end(JSON.stringify('User does not exist.'));
+        res.end(new Error('User does not exist.'));
       } else {
         // friend 1 found, load friend 2
         User.findById(id, (err, user2) => {
@@ -74,7 +59,7 @@ module.exports = {
             res.end(JSON.stringify(err));
           } else if (!user2) {
             console.log('\x1b[31m', 'User does not exist.');
-            res.end(JSON.stringify('User does not exist.'));
+            res.end(new Error('User does not exist.'));
           } else {
             // push user ids into eachothers friends arrays
             user1.friends.push(user2._id);
@@ -109,7 +94,7 @@ module.exports = {
         res.end(JSON.stringify(err));
       } else if (!user1) {
         console.log('\x1b[31m', 'User does not exist.');
-        res.end(JSON.stringify('User does not exist.'));
+        res.end(new Error('User does not exist.'));
       } else {
         User.findOne({ username: username }, (err, user2) => {
           if (err) {
@@ -117,7 +102,7 @@ module.exports = {
             res.end(JSON.stringify(err));
           } else if (!user2) {
             console.log('\x1b[31m', 'User does not exist.');
-            res.end(JSON.stringify('User does not exist.'));
+            res.end(new Error('User does not exist.'));
           } else {
             // remove friends
             user1.friends = user1.friends.filter((id) => {

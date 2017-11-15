@@ -1,23 +1,32 @@
 function configure(http) {
   const io = require('socket.io')(http, { pingInterval: 10000, pingTimeout: 20000 });
+  const playersOnline = [];
   let playerWaiting = null;
 
-  // add sockets back into rooms if they get disconnected while playing and reconnect
+  // Add sockets back into rooms if they get disconnected while playing and reconnect
 
   io.on('connection', (socket) => {
     console.log('\x1b[32m', 'New player connected:', socket.id);
 
     // Request user info and add to socket
     socket.emit('user-request', socket.id, (user) => {
-      socket.username = user.username;
-      socket.inGame = false;
 
-      let playersOnline = [];
-      let onlineSockets = io.sockets.sockets;
-      for (let id in onlineSockets) {
-        playersOnline.push(onlineSockets[id].username);
-      }
+      // username:
+      // auth0Id:
+      // socketId:
+      // avatarUrl:
+      // online:
+
+      socket.username = user.username;
+      socket.auth0Id = user.auth0Id;
+      socket.avatarUrl = user.avatarUrl;
+
+      playersOnline.push(user.username);
+
+      // TODO: Broadcast object with online array + connected: <username> OR disconnected: <username>
+
       socket.broadcast.emit('online-players-update', playersOnline);
+      // Emit event to self
       socket.emit('online-players-update', playersOnline);
 
       console.log('\x1b[32m', 'Online Players:', playersOnline);
