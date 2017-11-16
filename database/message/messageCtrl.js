@@ -1,5 +1,5 @@
 const Message = require('./messageModel');
-const User = require('./userModel');
+const User = require('../user/userModel');
 const mongoose = require('mongoose');
 
 module.exports = {
