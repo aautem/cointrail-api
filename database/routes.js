@@ -7,7 +7,7 @@ module.exports = (app, express) => {
 
   // LOAD/UPDATE/DELETE FRIENDS
   app.get('/api/friends/:id', userCtrl.loadFriends);
-  app.put('/api/friends/:id', userCtrl.updateFriends);
+  app.post('/api/friends', userCtrl.addFriends);
   app.delete('/api/friends/:id/:username', userCtrl.deleteFriend);
 
   // LOAD LEADERBOARD

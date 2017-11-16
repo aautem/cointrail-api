@@ -46,10 +46,10 @@ module.exports = {
       }
     });
   },
-  updateFriends: (req, res) => {
-    const id = req.params.id;
-    const username = req.body;
-    User.findOne({ username: username }, (err, user1) => {
+  addFriends: (req, res) => {
+    const userId1 = req.body[0];
+    const userId2 = req.body[1];
+    User.findById(userId1, (err, user1) => {
       if (err) {
         console.log('\x1b[31m', 'Error loading user:', err);
         res.end(JSON.stringify(err));
@@ -58,7 +58,7 @@ module.exports = {
         res.end(new Error('User does not exist.'));
       } else {
         // friend 1 found, load friend 2
-        User.findById(id, (err, user2) => {
+        User.findById(userId2, (err, user2) => {
           if (err) {
             console.log('\x1b[31m', 'Error loading user:', err);
             res.end(JSON.stringify(err));
