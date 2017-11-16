@@ -16,5 +16,5 @@ module.exports = (app, express) => {
   // LOAD/SEND/DELETE MESSAGES
   app.get('/api/messages/:id', messageCtrl.loadMessages);
   app.post('/api/messages', messageCtrl.createMessage); // handles friend requests as well
-  app.delete('/api/messages/:id', messageCtrl.deleteMessage); // message id
+  app.delete('/api/messages/:id', messageCtrl.deleteMessage); // message object id
 };
