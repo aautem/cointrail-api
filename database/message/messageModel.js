@@ -20,7 +20,7 @@ const MessageSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  timestamps: { createdAt: 'created_at' }
+  { timestamps: true }
 });
 
 module.exports = mongoose.model('Message', MessageSchema);
