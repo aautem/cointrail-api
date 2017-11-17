@@ -19,6 +19,9 @@ const MessageSchema = new mongoose.Schema({
   message: {
     type: String,
     required: true
+  },
+  timestamps: {
+    { createdAt: 'created_at' }
   }
 });
 

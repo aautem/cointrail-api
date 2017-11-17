@@ -17,10 +17,11 @@ module.exports = {
   },
   createMessage: (req, res) => {
 
-    // to: <username>
-    // from: <sender id>
-    // type: 'message' | 'friend'
-    // message: String
+    // toUsername
+    // fromUserId
+    // fromUsername
+    // type
+    // message
 
     if (!req.body.toUsername || !req.body.fromUserId || !req.body.fromUsername || !req.body.message) {
       console.log('\x1b[31m', 'Data missing from message.');
