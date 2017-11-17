@@ -140,7 +140,7 @@ module.exports = {
     });
   },
   loadLeaderboard: (req, res) => {
-    User.find({}, (err, users) => {
+    User.find({ "stats.gamesPlayed": { $gt: 0 }}, (err, users) => {
       if (err) {
         console.log('\x1b[31m', 'Error loading users:', err);
         res.end(JSON.stringify(err));
