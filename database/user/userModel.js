@@ -94,14 +94,7 @@ const UserSchema = new mongoose.Schema({
       required: true
     }
   },
-  friends: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      default: '5a0e34535fd046d86fac67c5',
-      required: true
-    }
-  ]
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 });
 
 module.exports = mongoose.model('User', UserSchema);
