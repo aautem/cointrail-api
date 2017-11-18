@@ -1,25 +1,25 @@
-// 'use strict'
+'use strict'
 /**
  * New Relic agent configuration.
  *
  * See lib/config.defaults.js in the agent distribution for a more complete
  * description of configuration variables and their potential values.
  */
-// exports.config = {
+exports.config = {
   /**
    * Array of application names.
    */
-  // app_name: ['cointrail-production'],
+  app_name: ['cointrail-production'],
   /**
    * Your New Relic license key.
    */
-  // license_key: 'a674c0648543c65d4413d523a6f9748e02cbc097',
-  // logging: {
+  license_key: 'a674c0648543c65d4413d523a6f9748e02cbc097',
+  logging: {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing
      * issues with the agent, 'info' and higher will impose the least overhead on
      * production applications.
      */
-//     level: 'info'
-//   }
-// }
+    level: 'info'
+  }
+}
