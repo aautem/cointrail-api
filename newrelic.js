@@ -9,7 +9,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['contrail-api'],
+  app_name: ['cointrail-production'],
   /**
    * Your New Relic license key.
    */

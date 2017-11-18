@@ -1,6 +1,6 @@
 {
-  "name": "contrail-api",
-  "version": "1.0.0",
+  "name": "cointrail-api",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aautem/contrail-api.git"
+    "url": "git+https://github.com/aautem/cointrail-api.git"
   },
   "author": "Alex Autem",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/aautem/contrail-api/issues"
+    "url": "https://github.com/aautem/cointrail-api/issues"
   },
-  "homepage": "https://github.com/aautem/contrail-api#readme",
+  "homepage": "https://github.com/aautem/cointrail-api#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
     "colors": "^1.1.2",
