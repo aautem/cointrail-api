@@ -66,6 +66,28 @@ function configure(http) {
       }
     });
 
+    // Request to start game with friend
+    socket.on('setup-game', (players) => {
+
+      console.log('\x1b[34m', 'Request to create game:', players.p1.username, 'vs.', players.p2.username);
+
+      // p1: player requesting game
+      // p2: player being requested
+
+      io.to(players.p2.socketId).emit('friend-game-request', players.p1.username, (response) => {
+        if (response === 'N') {
+          // request declined
+        } else if (response === 'Y') {
+          // request accepted, start game
+          players.p1.inGame = true;
+          players.p2.inGame = true;
+
+          // emit to players
+          io.to(players.p1.socketId).to(players.p2.socketId).emit('game-joined', players);
+        }
+      });
+    });
+
     socket.on('join-room', (roomname) => {
       console.log('\x1b[34m', 'Joining room:', socket.username, '>>>', roomname);
 
@@ -95,6 +117,11 @@ function configure(http) {
 
       // let other player know game is over
       io.to(roomName).emit('game-over', socket.username);
+    });
+
+    socket.on('online-request', (username, respond) => {
+      console.log('\x1b[34m', username, 'requesting online players');
+      respond(playersOnline);
     });
 
     socket.on('disconnecting', (reason) => {
