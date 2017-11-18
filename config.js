@@ -6,6 +6,8 @@ function loadConfig(app) {
     auth0Secret: process.env.AUTH0_CLIENT_SECRET,
     auth0Domain: process.env.AUTH0_DOMAIN,
     mongoDbUri: process.env.MONGODB_URI,
+    newRelicKey: process.env.NEW_RELIC_LICENSE_KEY,
+    newRelicLog: process.env.NEW_RELIC_LOG,
     paperTrailToken: process.env.PAPERTRAIL_API_TOKEN
   };
 
