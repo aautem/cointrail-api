@@ -70,13 +70,13 @@ function configure(http) {
     // Request to start game with friend
     socket.on('setup-game', (players) => {
 
-      console.log('\x1b[34m', 'Request to create game:', players.p1.username, 'vs.', players.p2.username);
+      console.log('\x1b[34m', 'Request to start game:', players.p2);
 
       // p1: player requesting game
       // p2: player being requested
 
       friendGames[players.p1.username] = players;
-      socket.to(players.p2.socketId).emit('friend-game-request', players.p1.username);
+      io.to(players.p2.socketId).emit('friend-game-request', players.p1.username);
     });
 
     socket.on('accept-game-request', (username) => {
