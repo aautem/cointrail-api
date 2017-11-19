@@ -1,6 +1,7 @@
 function configure(http) {
   const io = require('socket.io')(http, { pingInterval: 10000, pingTimeout: 20000 });
   let playersOnline = [];
+  let friendGames = {};
   let playerWaiting = null;
 
   // Add sockets back into rooms if they get disconnected while playing and reconnect
@@ -74,18 +75,21 @@ function configure(http) {
       // p1: player requesting game
       // p2: player being requested
 
-      socket.to(players.p2.socketId).emit('friend-game-request', players.p1.username, (response) => {
-        if (response === 'N') {
-          // request declined
-        } else if (response === 'Y') {
-          // request accepted, start game
-          players.p1.inGame = true;
-          players.p2.inGame = true;
+      friendGames[players.p1.username] = players;
+      socket.to(players.p2.socketId).emit('friend-game-request', players.p1.username);
+    });
 
-          // emit to players
-          io.to(players.p1.socketId).to(players.p2.socketId).emit('game-joined', players);
-        }
-      });
+    socket.on('accept-game-request', (username) => {
+      // request accepted, start game
+      if (friendGames[username]) {
+        const players = friendGames[username];
+
+        players.p1.inGame = true;
+        players.p2.inGame = true;
+
+        // emit to players
+        io.to(players.p1.socketId).to(players.p2.socketId).emit('game-joined', players);
+      }
     });
 
     socket.on('join-room', (roomname) => {
@@ -99,6 +103,8 @@ function configure(http) {
 
       if (playerWaiting && playerWaiting.username === username) {
         playerWaiting = null;
+      } else if (friendGames[username]) {
+        delete friendGames[username];
       }
     });
 
