@@ -74,7 +74,7 @@ function configure(http) {
       // p1: player requesting game
       // p2: player being requested
 
-      io.to(players.p2.socketId).emit('friend-game-request', players.p1.username, (response) => {
+      socket.to(players.p2.socketId).emit('friend-game-request', players.p1.username, (response) => {
         if (response === 'N') {
           // request declined
         } else if (response === 'Y') {
