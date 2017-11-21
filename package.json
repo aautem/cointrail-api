@@ -1,30 +1,30 @@
 {
   "name": "cointrail-api",
   "version": "1.1.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Socket server and RESTful API for the Cointrail mobile app.",
+  "author": "Alex Autem <autem.alex@gmail.com>",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aautem/cointrail-api.git"
+    "url": "https://github.com/aautem/cointrail-api.git"
   },
-  "author": "Alex Autem",
-  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/aautem/cointrail-api/issues"
+    "url": "https://github.com/aautem/cointrail-client/issues"
   },
   "homepage": "https://github.com/aautem/cointrail-api#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "colors": "^1.1.2",
     "express": "^4.15.4",
     "http": "0.0.0",
     "mongoose": "^4.13.0",
     "morgan": "^1.9.0",
     "newrelic": "^2.3.2",
     "socket.io": "^2.0.4"
-  }
+  },
+  "private": true,
+  "license": "GPL-3.0"
 }
