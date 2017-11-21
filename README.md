@@ -1,6 +1,6 @@
 # Cointrail
 
-> An online Connect 4/Tic-Tac-Toe hybrid with no tie games. The client repo contains the Android/iOS codebase built with React Native while the API repo contains the web socket server and RESTful API.
+> An online Connect 4/Tic-Tac-Toe hybrid with no tie games. The API repo contains the web socket server and RESTful API while the client repo contains the Android/iOS codebase built with React Native.
 
 ## Table of Contents
 
@@ -20,15 +20,13 @@
 
 ## Google Play
 
-The alpha version of Contrail is currently available in the [Google Play Store](https://play.google.com/store/apps/details?id=com.cointrail&hl=en) for testing and feedback. Thank you in advance to anyone taking the time to download and play the game.
+The alpha version of Cointrail is currently available in the [Google Play Store](https://play.google.com/store/apps/details?id=com.cointrail&hl=en) for testing and feedback. Thank you in advance to anyone taking the time to download and play the game.
 
 ## Development
 
-For best results, work off of the `develop` branch in the client and API repositories.
+For best results, work off of the `develop` branch in the API and client repositories.
 
 ### Cointrail API
-
-Running this application locally requires a separate [API repository](https://github.com/aautem/cointrail-api) for the web socket server and RESTful API and will need some custom configuration.
 
 First, run `npm install` from the root directory to download the dependencies.
 
@@ -53,6 +51,8 @@ Plug your Auth0 client credentials into the `./config.js` file.
 Run `npm start` from the root directory and navigate to `localhost:3000` in your browser where you'll see the text `.~::  C O I N T R A I L  ::~.` if your server is running correctly.
 
 ### Cointrail Client
+
+Running this application locally requires a separate [client repository](https://github.com/aautem/cointrail-client) for the React Native codebase and will need some custom configuration.
 
 - Run `npm install` from the root directory to download the dependencies.
 - Update the `API_URL` constant on line 2 of `./src/utilities/const.js` to use your locally running server at `localhost:3000` from above.
@@ -114,7 +114,7 @@ Please find the Cointrail roadmap and open issues [here](https://github.com/aaut
 
 ## Contributing
 
-Please see `./.eslintrc.json` for style guidelines and thank you in advance for any PRs. I appreciate the help!
+Please see `./.eslintrc.json` in the client repo for style guidelines and thank you in advance for any PRs. I appreciate the help!
 
 ## Resources
 
